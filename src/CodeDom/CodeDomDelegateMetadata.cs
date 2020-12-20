@@ -1,9 +1,8 @@
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
 using EnvDTE;
 using EnvDTE80;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -25,7 +24,8 @@ namespace Typewriter.Metadata.CodeDom
         public bool IsAbstract => false;
         public bool IsGeneric => codeDelegate.IsGeneric;
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeDelegate.Attributes);
-        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(codeDelegate.Parent as CodeClass2, file);
+        public IClassMetadata ContainingAllClass => CodeDomClassMetadata.FromAllCodeClass(codeDelegate.Parent as CodeClass2, file);
+        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromPublicCodeClass(codeDelegate.Parent as CodeClass2, file);
         public IEnumerable<ITypeParameterMetadata> TypeParameters => CodeDomTypeParameterMetadata.FromFullName(GetFullDelegateName());
         public IEnumerable<IParameterMetadata> Parameters => CodeDomParameterMetadata.FromCodeElements(codeDelegate.Parameters, file);
         public ITypeMetadata Type => CodeDomTypeMetadata.FromCodeElement(codeDelegate, file);

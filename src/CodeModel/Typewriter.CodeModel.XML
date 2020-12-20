@@ -644,6 +644,11 @@
             Represents a file.
             </summary>
         </member>
+        <member name="P:Typewriter.CodeModel.File.AllClasses">
+            <summary>
+            All classes defined in the file.
+            </summary>
+        </member>
         <member name="P:Typewriter.CodeModel.File.Classes">
             <summary>
             All public classes defined in the file.

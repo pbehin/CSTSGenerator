@@ -20,11 +20,15 @@ namespace Typewriter.Metadata.CodeDom
 
         public string Name => projectItem.Name;
         public string FullName => projectItem.FileNames[1];
-        public IEnumerable<IClassMetadata> Classes => 
-            CodeDomClassMetadata.FromCodeElements(projectItem.FileCodeModel.CodeElements, this)
-            .Concat(Namespaces.SelectMany(n => CodeDomClassMetadata.FromCodeElements(n.Members, this)));
+        public IEnumerable<IClassMetadata> AllClasses => 
+            CodeDomClassMetadata.FromAllCodeElements(projectItem.FileCodeModel.CodeElements, this)
+            .Concat(Namespaces.SelectMany(n => CodeDomClassMetadata.FromAllCodeElements(n.Members, this)));
 
-        public IEnumerable<IDelegateMetadata> Delegates =>
+        public IEnumerable<IClassMetadata> Classes => 
+            CodeDomClassMetadata.FromPublicCodeElements(projectItem.FileCodeModel.CodeElements, this)
+            .Concat(Namespaces.SelectMany(n => CodeDomClassMetadata.FromPublicCodeElements(n.Members, this)));
+
+public IEnumerable<IDelegateMetadata> Delegates =>
             CodeDomDelegateMetadata.FromCodeElements(projectItem.FileCodeModel.CodeElements, this)
             .Concat(Namespaces.SelectMany(n => CodeDomDelegateMetadata.FromCodeElements(n.Members, this)));
 

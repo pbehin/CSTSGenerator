@@ -178,7 +178,7 @@ namespace Typewriter.Generation
                 {
                     try
                     {
-                        item = _projectItem.ProjectItems.AddFromFile(outputPath);
+                        item = _projectItem.Collection.AddFromFile(outputPath);
                     }
                     catch (Exception exception)
                     {
@@ -261,7 +261,7 @@ namespace Typewriter.Generation
 
         private ProjectItem GetExistingItem(string path)
         {
-            foreach (ProjectItem item in _projectItem.ProjectItems)
+            foreach (ProjectItem item in _projectItem.Collection)
             {
                 try
                 {
@@ -282,7 +282,7 @@ namespace Typewriter.Generation
         private string GetOutputPath(File file)
         {
             var path = file.FullName;
-            var directory = Path.GetDirectoryName(_templatePath);
+            var directory = GetOutputDirectory();
             var filename = GetOutputFilename(file, path);
             var outputPath = Path.Combine(directory, filename);
 
@@ -306,6 +306,15 @@ namespace Typewriter.Generation
             }
 
             throw new Exception("GetOutputPath");
+        }
+
+        private string GetOutputDirectory()
+        {
+            var defaultPath = Path.GetDirectoryName(_templatePath);
+            if (_configuration.Value.OutputFilenameFactory != null)
+                {
+            }
+            return defaultPath
         }
 
         private string GetOutputFilename(File file, string sourcePath)
@@ -370,7 +379,7 @@ namespace Typewriter.Generation
 
         private ProjectItem FindProjectItem(string path)
         {
-            foreach (ProjectItem item in _projectItem.ProjectItems)
+            foreach (ProjectItem item in _projectItem.Collection)
             {
                 try
                 {

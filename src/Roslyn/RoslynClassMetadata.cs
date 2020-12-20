@@ -59,7 +59,8 @@ namespace Typewriter.Metadata.Roslyn
         public IEnumerable<IPropertyMetadata> Properties => RoslynPropertyMetadata.FromPropertySymbol(Members.OfType<IPropertySymbol>());
         public IEnumerable<ITypeParameterMetadata> TypeParameters => RoslynTypeParameterMetadata.FromTypeParameterSymbols(_symbol.TypeParameters);
         public IEnumerable<ITypeMetadata> TypeArguments => RoslynTypeMetadata.FromTypeSymbols(_symbol.TypeArguments);
-        public IEnumerable<IClassMetadata> NestedClasses => RoslynClassMetadata.FromNamedTypeSymbols(Members.OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
+        public IEnumerable<IClassMetadata> NestedAllClasses => RoslynClassMetadata.FromAllNamedTypeSymbols(Members.OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
+        public IEnumerable<IClassMetadata> NestedClasses => RoslynClassMetadata.FromPublicNamedTypeSymbols(Members.OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
         public IEnumerable<IEnumMetadata> NestedEnums => RoslynEnumMetadata.FromNamedTypeSymbols(Members.OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Enum));
         public IEnumerable<IInterfaceMetadata> NestedInterfaces => RoslynInterfaceMetadata.FromNamedTypeSymbols(Members.OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Interface));
 
@@ -71,9 +72,25 @@ namespace Typewriter.Metadata.Roslyn
             return new RoslynClassMetadata(symbol, null);
         }
 
-        internal static IEnumerable<IClassMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols, RoslynFileMetadata file = null)
+        internal static IEnumerable<IClassMetadata> FromPublicNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols,
+            RoslynFileMetadata file = null)
         {
-            return symbols.Where(s => s.DeclaredAccessibility == Accessibility.Public && s.ToDisplayString() != "object").Select(s => new RoslynClassMetadata(s, file));
+            return FromNamedTypeSymbols(symbols, new[] { Accessibility.Public }, file);
+        }
+
+        internal static IEnumerable<IClassMetadata> FromAllNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols,
+            RoslynFileMetadata file = null)
+        {
+            var all = Enum.GetValues(typeof(Accessibility)).Cast<Accessibility>();
+            return FromNamedTypeSymbols(symbols, all, file);
+        }
+        internal static IEnumerable<IClassMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols,
+            IEnumerable<Accessibility> declaredAccessibilities,
+            RoslynFileMetadata file = null)
+        {
+            return symbols.Where(s => declaredAccessibilities.Contains(s.DeclaredAccessibility) &&
+                                      s.ToDisplayString() != "object")
+                          .Select(s => new RoslynClassMetadata(s, file));
         }
     }
 }

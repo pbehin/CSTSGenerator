@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Generic;
+using System.Linq;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.Roslyn
@@ -22,12 +19,12 @@ namespace Typewriter.Metadata.Roslyn
         }
 
         public string DocComment => symbol.GetDocumentationCommentXml();
-        public string Name => symbol.GetName() + (IsNullable? "?" : string.Empty);
-        public string FullName => symbol.GetFullName() + (IsNullable? "?" : string.Empty);
+        public string Name => symbol.GetName() + (IsNullable ? "?" : string.Empty);
+        public string FullName => symbol.GetFullName() + (IsNullable ? "?" : string.Empty);
         public bool IsAbstract => (symbol as INamedTypeSymbol)?.IsAbstract ?? false;
         public bool IsGeneric => (symbol as INamedTypeSymbol)?.TypeParameters.Any() ?? false;
         public bool IsDefined => symbol.Locations.Any(l => l.IsInSource);
-        public bool IsValueTuple => symbol.Name == "" && symbol.BaseType?.Name == "ValueType" && symbol.BaseType.ContainingNamespace.Name == "System";
+        public bool IsValueTuple => symbol.Name == string.Empty && symbol.BaseType?.Name == "ValueType" && symbol.BaseType.ContainingNamespace.Name == "System";
 
         public string Namespace => symbol.GetNamespace();
         public ITypeMetadata Type => this;
@@ -42,7 +39,8 @@ namespace Typewriter.Metadata.Roslyn
         public IEnumerable<IInterfaceMetadata> Interfaces => RoslynInterfaceMetadata.FromNamedTypeSymbols(symbol.Interfaces);
         public IEnumerable<IMethodMetadata> Methods => RoslynMethodMetadata.FromMethodSymbols(symbol.GetMembers().OfType<IMethodSymbol>());
         public IEnumerable<IPropertyMetadata> Properties => RoslynPropertyMetadata.FromPropertySymbol(symbol.GetMembers().OfType<IPropertySymbol>());
-        public IEnumerable<IClassMetadata> NestedClasses => RoslynClassMetadata.FromNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
+        public IEnumerable<IClassMetadata> AllNestedClasses => RoslynClassMetadata.FromAllNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
+        public IEnumerable<IClassMetadata> NestedClasses => RoslynClassMetadata.FromPublicNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
         public IEnumerable<IEnumMetadata> NestedEnums => RoslynEnumMetadata.FromNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Enum));
         public IEnumerable<IInterfaceMetadata> NestedInterfaces => RoslynInterfaceMetadata.FromNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Interface));
         public IEnumerable<IFieldMetadata> TupleElements
@@ -53,7 +51,7 @@ namespace Typewriter.Metadata.Roslyn
                 {
                     if (symbol is INamedTypeSymbol n)
                     {
-                        if (n.Name == "" && n.BaseType?.Name == "ValueType" && n.BaseType.ContainingNamespace.Name == "System")
+                        if (n.Name == string.Empty && n.BaseType?.Name == "ValueType" && n.BaseType.ContainingNamespace.Name == "System")
                         {
                             var property = n.GetType().GetProperty(nameof(TupleElements));
                             if (property != null)
@@ -67,7 +65,7 @@ namespace Typewriter.Metadata.Roslyn
                     }
                 }
                 catch { }
-                
+
                 return new IFieldMetadata[0];
             }
         }
@@ -80,7 +78,7 @@ namespace Typewriter.Metadata.Roslyn
                     return FromTypeSymbols(namedTypeSymbol.TypeArguments);
 
                 if (symbol is IArrayTypeSymbol arrayTypeSymbol)
-                    return FromTypeSymbols(new [] { arrayTypeSymbol.ElementType});
+                    return FromTypeSymbols(new[] { arrayTypeSymbol.ElementType });
 
                 return new ITypeMetadata[0];
             }

@@ -60,8 +60,8 @@ jobs:
 
     env:
       Solution_Name: Typewriter.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
-      Test_Project_Path: ..\Tests\Typewriter.Tests.csproj                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
-      Test_Project_Dll_Path: Tests\Typewriter.Tests.dll
+      Test_Project_Path: Tests\Typewriter.Tests.csproj                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
+      Test_Project_Dll_Path: Tests\bin\Debug\Typewriter.Tests.dll
       #Wap_Project_Directory: Typewriter.Package    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
       #Wap_Project_Path: your-wap-project-path                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
 

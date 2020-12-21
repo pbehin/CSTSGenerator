@@ -85,9 +85,7 @@ jobs:
       
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: msbuild.exe $env:Test_Project_Path /t:test /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
+      run: msbuild.exe /t:test
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application

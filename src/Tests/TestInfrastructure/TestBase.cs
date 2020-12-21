@@ -29,7 +29,7 @@ namespace Typewriter.Tests.TestInfrastructure
             this.isCodeDom = fixture is CodeDomFixture;
         }
         
-        protected string SolutionDirectory => Path.Combine(new FileInfo(dte.Solution.FileName).Directory?.FullName, "src");
+        protected string SolutionDirectory => Path.Combine(new FileInfo(dte?.Solution?.FileName).Directory?.FullName, "src");
 
         protected ProjectItem GetProjectItem(string path)
         {

@@ -99,7 +99,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: VSTest
-      run: vstest.console.exe $env:Test_Project_Path
+      run: vstest.console.exe $env:Typewriter.sln
 
     # Decode the base 64 encoded pfx and save the Signing_Certificate
     #- name: Decode the pfx

@@ -81,11 +81,11 @@ jobs:
     
     # Restore Nuget Packages
     - name: Restore Nuget Packages
-      run : nuget restore Typewriter.sln
+      run : nuget restore $env:Typewriter.sln
       
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: msbuild.exe /t:test /p:Configuration=$env:Configuration
+      run: msbuild.exe $env:Typewriter.sln /t:test /p:Configuration=$env:Configuration
       env:
         Configuration: ${{ matrix.configuration }}
 

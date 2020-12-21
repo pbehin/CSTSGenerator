@@ -654,6 +654,11 @@
             All public classes defined in the file.
             </summary>
         </member>
+        <member name="P:Typewriter.CodeModel.File.AllDelegates">
+            <summary>
+            All delegates defined in the file.
+            </summary>
+        </member>
         <member name="P:Typewriter.CodeModel.File.Delegates">
             <summary>
             All public delegates defined in the file.

@@ -19,6 +19,11 @@ namespace Typewriter.CodeModel
         public abstract ClassCollection Classes { get; }
 
         /// <summary>
+        /// All delegates defined in the file.
+        /// </summary>
+        public abstract DelegateCollection AllDelegates { get; }
+
+        /// <summary>
         /// All public delegates defined in the file.
         /// </summary>
         public abstract DelegateCollection Delegates { get; }

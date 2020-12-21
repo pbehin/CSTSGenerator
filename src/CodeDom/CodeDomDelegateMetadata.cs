@@ -48,9 +48,20 @@ namespace Typewriter.Metadata.CodeDom
             return new CodeDomDelegateMetadata(codeElement, file);
         }
 
-        internal static IEnumerable<IDelegateMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
+        internal static IEnumerable<IDelegateMetadata> FromPublicCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
         {
-            return codeElements.OfType<CodeDelegate2>().Where(d => d.Access == vsCMAccess.vsCMAccessPublic).Select(d => FromCodeDelegate(d, file));
+            return FromCodeElements(codeElements, file, new[] { vsCMAccess.vsCMAccessPublic });
+        }
+
+        internal static IEnumerable<IDelegateMetadata> FromAllCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
+        {
+            var all = Enum.GetValues(typeof(vsCMAccess)).Cast<vsCMAccess>();
+            return FromCodeElements(codeElements, file, all);
+        }
+
+        internal static IEnumerable<IDelegateMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file, IEnumerable<vsCMAccess> vsCMAccess)
+        {
+            return codeElements.OfType<CodeDelegate2>().Where(d => vsCMAccess.Contains(d.Access)).Select(d => FromCodeDelegate(d, file));
         }
     }
 }

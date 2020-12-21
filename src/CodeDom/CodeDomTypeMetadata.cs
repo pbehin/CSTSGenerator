@@ -48,15 +48,16 @@ namespace Typewriter.Metadata.CodeDom
         public IClassMetadata BaseClass => CodeDomClassMetadata.FromPublicCodeElements(CodeType.Bases, file).FirstOrDefault();
         public IClassMetadata ContainingClass => CodeDomClassMetadata.FromPublicCodeClass(CodeType.Parent as CodeClass2, file);
         public IEnumerable<IConstantMetadata> Constants => CodeDomConstantMetadata.FromCodeElements(CodeType.Children, file);
-        public IEnumerable<IDelegateMetadata> Delegates => CodeDomDelegateMetadata.FromCodeElements(CodeType.Children, file);
+        public IEnumerable<IDelegateMetadata> AllDelegates => CodeDomDelegateMetadata.FromAllCodeElements(CodeType.Children, file);
+        public IEnumerable<IDelegateMetadata> Delegates => CodeDomDelegateMetadata.FromPublicCodeElements(CodeType.Children, file);
         public IEnumerable<IEventMetadata> Events => CodeDomEventMetadata.FromCodeElements(CodeType.Children, file);
         public IEnumerable<IFieldMetadata> Fields => CodeDomFieldMetadata.FromCodeElements(CodeType.Children, file);
         public IEnumerable<IInterfaceMetadata> Interfaces => CodeDomInterfaceMetadata.FromCodeElements(CodeType.Bases, file);
         public IEnumerable<IMethodMetadata> Methods => CodeDomMethodMetadata.FromCodeElements(CodeType.Children, file);
         public IEnumerable<IPropertyMetadata> Properties => CodeDomPropertyMetadata.FromCodeElements(CodeType.Children, file);
         public IEnumerable<IClassMetadata> AllNestedClasses => CodeDomClassMetadata.FromAllCodeElements(CodeType.Members, file);
-         public IEnumerable<IClassMetadata> NestedClasses => CodeDomClassMetadata.FromPublicCodeElements(CodeType.Members, file);
-       public IEnumerable<IEnumMetadata> NestedEnums => CodeDomEnumMetadata.FromCodeElements(CodeType.Members, file);
+        public IEnumerable<IClassMetadata> NestedClasses => CodeDomClassMetadata.FromPublicCodeElements(CodeType.Members, file);
+        public IEnumerable<IEnumMetadata> NestedEnums => CodeDomEnumMetadata.FromCodeElements(CodeType.Members, file);
         public IEnumerable<IInterfaceMetadata> NestedInterfaces => CodeDomInterfaceMetadata.FromCodeElements(CodeType.Members, file);
 
 

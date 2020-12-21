@@ -314,7 +314,7 @@ namespace Typewriter.Generation
             if (_configuration.Value.OutputFilenameFactory != null)
                 {
             }
-            return defaultPath
+            return defaultPath;
         }
 
         private string GetOutputFilename(File file, string sourcePath)

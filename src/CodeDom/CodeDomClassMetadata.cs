@@ -31,7 +31,8 @@ namespace Typewriter.Metadata.CodeDom
         public IClassMetadata ContainingClass => CodeDomClassMetadata.FromPublicCodeClass(codeClass.Parent as CodeClass2, file);
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeClass.Attributes);
         public IEnumerable<IConstantMetadata> Constants => CodeDomConstantMetadata.FromCodeElements(codeClass.Children, file);
-        public IEnumerable<IDelegateMetadata> Delegates => CodeDomDelegateMetadata.FromCodeElements(codeClass.Children, file);
+        public IEnumerable<IDelegateMetadata> AllDelegates => CodeDomDelegateMetadata.FromAllCodeElements(codeClass.Children, file);
+        public IEnumerable<IDelegateMetadata> Delegates => CodeDomDelegateMetadata.FromPublicCodeElements(codeClass.Children, file);
         public IEnumerable<IEventMetadata> Events => CodeDomEventMetadata.FromCodeElements(codeClass.Children, file);
         public IEnumerable<IFieldMetadata> Fields => CodeDomFieldMetadata.FromCodeElements(codeClass.Children, file);
         public IEnumerable<ITypeParameterMetadata> TypeParameters => CodeDomTypeParameterMetadata.FromFullName(codeClass.FullName);

@@ -21,6 +21,9 @@ namespace Typewriter.CodeModel.Implementation
         public override ClassCollection AllClasses => _allClasses ?? (_allClasses = ClassImpl.FromMetadata(_metadata.AllClasses, this));
 
 
+        private DelegateCollection _allDelegates;
+        public override DelegateCollection AllDelegates => _allDelegates ?? (_allDelegates = DelegateImpl.FromMetadata(_metadata.AllDelegates, this));
+
         private DelegateCollection _delegates;
         public override DelegateCollection Delegates => _delegates ?? (_delegates = DelegateImpl.FromMetadata(_metadata.Delegates, this));
 

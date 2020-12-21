@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -26,9 +27,22 @@ namespace Typewriter.Metadata.Roslyn
         public IEnumerable<ITypeParameterMetadata> TypeParameters => RoslynTypeParameterMetadata.FromTypeParameterSymbols(symbol.TypeParameters);
         public IEnumerable<IParameterMetadata> Parameters => methodSymbol == null ? new IParameterMetadata[0] : RoslynParameterMetadata.FromParameterSymbols(methodSymbol.Parameters);
 
-        public static IEnumerable<IDelegateMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols)
+        internal static IEnumerable<IDelegateMetadata> FromPublicNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols)
         {
-            return symbols.Where(s => s.DeclaredAccessibility == Accessibility.Public).Select(s => new RoslynDelegateMetadata(s));
+            return FromNamedTypeSymbols(symbols, new[] { Accessibility.Public });
+        }
+
+        internal static IEnumerable<IDelegateMetadata> FromAllNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols)
+        {
+            var all = Enum.GetValues(typeof(Accessibility)).Cast<Accessibility>();
+            return FromNamedTypeSymbols(symbols, all);
+        }
+
+        public static IEnumerable<IDelegateMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols,
+            IEnumerable<Accessibility> declaredAccessibilities
+            )
+        {
+            return symbols.Where(s => declaredAccessibilities.Contains(s.DeclaredAccessibility)).Select(s => new RoslynDelegateMetadata(s));
         }
     }
 }

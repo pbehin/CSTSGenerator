@@ -53,6 +53,7 @@ jobs:
         configuration: [Debug]#, Release]
         nuget: [latest]
         os: [windows-latest]
+        dotnet: [ '3.1.x' ]
 
     runs-on: ${{ matrix.os }}  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
@@ -69,6 +70,11 @@ jobs:
       with:
         fetch-depth: 0
 
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+          dotnet-version: ${{ matrix.dotnet }}
+      
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
@@ -85,7 +91,7 @@ jobs:
       
     # Execute all unit tests in the solution
     - name: Execute Tests
-      run: dotnet test
+      run: dotnet test $env:Typewriter.sln
 
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
@@ -99,6 +105,9 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
+    # Execute all unit tests in the solution
+    - name: Execute Tests
+      run: dotnet test
     # Decode the base 64 encoded pfx and save the Signing_Certificate
     #- name: Decode the pfx
     #  run: |

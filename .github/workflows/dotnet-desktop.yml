@@ -89,10 +89,6 @@ jobs:
     - name: Restore Nuget Packages
       run : nuget restore $env:Typewriter.sln
       
-    # Execute all unit tests in the solution
-    - name: Execute Tests
-      run: msbuild $env:Typewriter.sln /t:TeamTest
-
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
       run: msbuild $env:Typewriter.sln /t:Restore /p:Configuration=$env:Configuration
@@ -104,9 +100,7 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    # Execute all unit tests in the solution
-    - name: Execute Tests
-      run: dotnet test
+    
     # Decode the base 64 encoded pfx and save the Signing_Certificate
     #- name: Decode the pfx
     #  run: |

@@ -51,7 +51,7 @@ jobs:
     strategy:
       matrix:
         configuration: [Debug, Release]
-        nuget: [latest]#, preview, 4.x, 5.3.1]
+        nuget: [latest]
         os: [windows-latest]
 
     runs-on: ${{ matrix.os }}  # For a list of available runner types, refer to
@@ -60,7 +60,7 @@ jobs:
     env:
       Solution_Name: Typewriter.sln                         # Replace with your solution name, i.e. MyWpfApp.sln.
       Test_Project_Path: Typewriter.Tests.csproj                 # Replace with the path to your test project, i.e. MyWpfApp.Tests\MyWpfApp.Tests.csproj.
-      Wap_Project_Directory: Typewriter.Package    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
+      #Wap_Project_Directory: Typewriter.Package    # Replace with the Wap project directory relative to the solution, i.e. MyWpfApp.Package.
       #Wap_Project_Path: your-wap-project-path                   # Replace with the path to your Wap project, i.e. MyWpf.App.Package\MyWpfApp.Package.wapproj.
 
     steps:
@@ -90,6 +90,11 @@ jobs:
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application
       run: msbuild $env:Typewriter.sln /t:Restore /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
+    
+    - name: Restore the application
+      run: msbuild $env:Typewriter.sln /p:Configuration=$env:Configuration /p:AppxBundle=$env:Appx_Bundle
       env:
         Configuration: ${{ matrix.configuration }}
     

@@ -36,7 +36,7 @@
 # For a complete CI/CD sample to get started with GitHub Action workflows for Desktop Applications,
 # refer to https://github.com/microsoft/github-actions-for-desktop-apps
 
-name: .NET
+name: Typewriter For Wondows - Debug & Release
 
 on:
   push:
@@ -69,10 +69,6 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Install the .NET workload
-    #- name: Install .NET
-    #  uses: actions/setup-dotnet@v1
-      
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
@@ -89,7 +85,9 @@ jobs:
       
     # Execute all unit tests in the solution
     - name: Execute unit tests
-      run: dotnet test
+      run: msbuild.exe /t:test /p:Configuration=$env:Configuration
+      env:
+        Configuration: ${{ matrix.configuration }}
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application

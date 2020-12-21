@@ -52,9 +52,9 @@ jobs:
       matrix:
         configuration: [Debug, Release]
         nuget: [latest, preview, 4.x, 5.3.1]
-        os: [windows-latest, ubuntu-latest, macOS-latest]
+        os: [windows-latest]
 
-    runs-on: windows-latest  # For a list of available runner types, refer to
+    runs-on: ${{ matrix.os }}  # For a list of available runner types, refer to
                              # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
 
     env:

@@ -82,6 +82,10 @@ jobs:
       uses : nuget/setup-nuget@v1
       with:
            nuget-version: ${{ matrix.nuget }}
+    
+    # Restore Nuget Packages
+    - name: Restore Nuget Packages
+      run : nuget restore Typewriter.sln
       
     # Execute all unit tests in the solution
     - name: Execute unit tests
@@ -93,7 +97,7 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
     
-    - name: Restore the application
+    - name: Build the application
       run: msbuild $env:Typewriter.sln /p:Configuration=$env:Configuration /p:AppxBundle=$env:Appx_Bundle
       env:
         Configuration: ${{ matrix.configuration }}

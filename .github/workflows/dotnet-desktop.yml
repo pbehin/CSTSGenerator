@@ -50,7 +50,7 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug, Release]
+        configuration: [Debug]#, Release]
         nuget: [latest]
         os: [windows-latest]
 
@@ -84,8 +84,9 @@ jobs:
       run : nuget restore $env:Typewriter.sln
       
     # Execute all unit tests in the solution
-    - name: Execute unit tests
-      run: msbuild.exe /t:test  $env:Test_Project_Path
+    - name: Setup VSTest Path
+      uses: darenm/Setup-VSTest@v1
+
 
     # Restore the application to populate the obj folder with RuntimeIdentifiers
     - name: Restore the application

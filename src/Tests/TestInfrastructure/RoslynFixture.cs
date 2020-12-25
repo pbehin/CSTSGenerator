@@ -13,8 +13,8 @@ namespace Typewriter.Tests.TestInfrastructure
         public RoslynFixture()
         {
             _solutionFileInfo = new FileInfo(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Typewriter.sln"));
-            Provider = new RoslynMetadataProviderStub(Path.Combine(AppContext.BaseDirectory, @"..\..\Typewriter.Tests.csproj"));
             Dte = TestInfrastructure.Dte.GetInstance(_solutionFileInfo.FullName);
+            Provider = new RoslynMetadataProviderStub(Path.Combine(AppContext.BaseDirectory, @"..\..\Typewriter.Tests.csproj"));
 
             // Handle threading errors when calling into Visual Studio.
             MessageFilter.Register();
@@ -26,8 +26,8 @@ namespace Typewriter.Tests.TestInfrastructure
 
         public void Dispose()
         {
-            MessageFilter.Revoke();
             Dte.Quit();
+            MessageFilter.Revoke();
         }
     }
 

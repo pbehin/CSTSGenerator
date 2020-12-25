@@ -27,8 +27,8 @@ namespace Typewriter.Tests.TestInfrastructure
 
         public void Dispose()
         {
+            Dte.Quit(); 
             MessageFilter.Revoke();
-            Dte.Quit();
         }
 
     }

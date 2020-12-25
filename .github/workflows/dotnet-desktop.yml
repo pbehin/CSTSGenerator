@@ -110,7 +110,7 @@ jobs:
             & "vstest.console.exe" $args
             if(-not $?){ throw "fail!" }
           }
-          Invoke-VSTest $env:Test_Project_Dll_Path --Parallel
+          Invoke-VSTest $env:Test_Project_Dll_Path 
     
     # Decode the base 64 encoded pfx and save the Signing_Certificate
     #- name: Decode the pfx

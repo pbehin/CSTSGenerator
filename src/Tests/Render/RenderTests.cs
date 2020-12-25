@@ -1,6 +1,5 @@
 ﻿using Should;
 using Typewriter.Generation;
-using Typewriter.Tests.Render.RoutedApiController;
 using Typewriter.Tests.TestInfrastructure;
 using Xunit;
 

@@ -80,7 +80,7 @@ namespace Typewriter.Metadata.CodeDom
 
         internal static IClassMetadata FromCodeClass(CodeClass2 codeClass, CodeDomFileMetadata file, IEnumerable<vsCMAccess> vsCMAccess)
         {
-            return codeClass == null || vsCMAccess.Contains(codeClass.Access) || codeClass.FullName == "System.Object" ? null : new CodeDomClassMetadata(codeClass, file);
+            return codeClass == null || !vsCMAccess.Contains(codeClass.Access) || codeClass.FullName == "System.Object" ? null : new CodeDomClassMetadata(codeClass, file);
         }
     }
 }

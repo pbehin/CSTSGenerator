@@ -80,8 +80,8 @@ jobs:
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.0.2
     
-    #- name: Setup .net framework env
-    #  uses: vrnobody/Setup-DotNetFrameworkEnv@v1.2.6
+    - name: Setup .net framework env
+      uses: vrnobody/Setup-DotNetFrameworkEnv@v1.2.6
 
     #Setup NuGet.exe
     - name: NuGet@${{ matrix.nuget }} Nuget
@@ -104,13 +104,13 @@ jobs:
       env:
         Configuration: ${{ matrix.configuration }}
 
-    #- name: Run Tests
-    #  run: |
-    #      function Invoke-VSTest {
-    #        & "vstest.console.exe" $args
-    #        if(-not $?){ throw "fail!" }
-    #      }
-    #      Invoke-VSTest $env:Test_Project_Dll_Path
+    - name: Run Tests
+      run: |
+          function Invoke-VSTest {
+            & "vstest.console.exe" $args
+            if(-not $?){ throw "fail!" }
+          }
+          Invoke-VSTest $env:Test_Project_Dll_Path --Parallel
     
     # Decode the base 64 encoded pfx and save the Signing_Certificate
     #- name: Decode the pfx

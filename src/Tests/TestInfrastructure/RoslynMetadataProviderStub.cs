@@ -1,38 +1,39 @@
 ﻿using System.Linq;
-using EnvDTE;
-using Microsoft.CodeAnalysis.MSBuild;
 using Typewriter.Metadata.Interfaces;
 using Typewriter.Metadata.Providers;
 using Typewriter.Metadata.Roslyn;
 using Typewriter.Configuration;
 using System;
+using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Host.Mef;
+using Microsoft.CodeAnalysis.MSBuild;
+using Microsoft.CodeAnalysis.Text;
+using Typewriter.Generation;
 
 namespace Typewriter.Tests.TestInfrastructure
 {
     public class RoslynMetadataProviderStub : IMetadataProvider
     {
-        private readonly Microsoft.CodeAnalysis.Workspace workspace;
+        private readonly Project _project = null;
 
-        public RoslynMetadataProviderStub(DTE dte)
+        public RoslynMetadataProviderStub(string projectPath)
         {
-            var solutionPath = dte.Solution.FullName;
-            var msBuildWorkspace = MSBuildWorkspace.Create();
-
-            // ReSharper disable once UnusedVariable
-            var solution = msBuildWorkspace.OpenSolutionAsync(solutionPath).Result;
-
-            this.workspace = msBuildWorkspace;
+            _project = MSBuildWorkspace.Create().OpenProjectAsync(projectPath).Result;
         }
 
         public IFileMetadata GetFile(string path, Settings settings, Action<string[]> requestRender)
         {
-            var document = workspace.CurrentSolution.GetDocumentIdsWithFilePath(path).FirstOrDefault();
+            
+            var document = _project.Solution.GetDocumentIdsWithFilePath(path).FirstOrDefault();
             if (document != null)
             {
-                return new RoslynFileMetadata(workspace.CurrentSolution.GetDocument(document), settings, requestRender);
+                return new RoslynFileMetadata(_project.GetDocument(document), settings, requestRender);
             }
 
             return null;
         }
+
+        public Solution CurrentSolution => _project.Solution;
     }
 }

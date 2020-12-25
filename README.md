@@ -1,5 +1,5 @@
 # Introduction
-    this repo forked from orginal Typewriter(http://frhagn.github.io/Typewriter) fro generating Typescript Code from all objct no not only from public objects.
+this repo forked from orginal Typewriter(http://frhagn.github.io/Typewriter) fro generating Typescript Code from all objct no not only from public objects.
 # Typewriter
 Typewriter is a Visual Studio extensions that generates TypeScript files from c# code files using TypeScript Templates.
 This allows you to create fully typed TypeScript representations of server side API, models, controllers, SignalR hubs etc. that automatically updates when you make changes to your c# code.

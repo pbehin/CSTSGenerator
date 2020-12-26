@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Typewriter.CodeModel;
 
 namespace Typewriter.Metadata.Interfaces
 {
@@ -6,6 +7,7 @@ namespace Typewriter.Metadata.Interfaces
     {
         bool IsAbstract { get; }
         bool IsGeneric { get; }
+        AccessModifier AccessModifiers { get; }
         IEnumerable<ITypeParameterMetadata> TypeParameters { get; }
         IEnumerable<IParameterMetadata> Parameters { get; }
     }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
+using Typewriter.CodeModel;
+using Typewriter.Metadata.CodeDom.Extensions.Enums;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -30,6 +32,7 @@ namespace Typewriter.Metadata.CodeDom
         public ITypeMetadata Type => this;
 
         public bool IsAbstract => (codeType as CodeClass2)?.IsAbstract ?? false;
+        public AccessModifier AccessModifiers => codeType.Access.ToAccessModifier();
         public bool IsEnum => CodeType.Kind == vsCMElement.vsCMElementEnum;
         public bool IsEnumerable => IsCollection(FullName);
         public bool IsGeneric => FullName.IndexOf("<", StringComparison.Ordinal) > -1 && IsNullable == false;
@@ -43,20 +46,16 @@ namespace Typewriter.Metadata.CodeDom
         public IEnumerable<ITypeMetadata> TypeArguments => LoadGenericTypeArguments(IsGeneric, FullName, file);
         public IEnumerable<ITypeParameterMetadata> TypeParameters => CodeDomTypeParameterMetadata.FromFullName(FullName);
 
-        public IClassMetadata AllBaseClass => CodeDomClassMetadata.FromAllCodeElements(CodeType.Bases, file).FirstOrDefault();
-        public IClassMetadata AllContainingClass => CodeDomClassMetadata.FromAllCodeClass(CodeType.Parent as CodeClass2, file);
-        public IClassMetadata BaseClass => CodeDomClassMetadata.FromPublicCodeElements(CodeType.Bases, file).FirstOrDefault();
-        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromPublicCodeClass(CodeType.Parent as CodeClass2, file);
+        public IClassMetadata BaseClass => CodeDomClassMetadata.FromCodeElements(CodeType.Bases, file).FirstOrDefault();
+        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(CodeType.Parent as CodeClass2, file);
         public IEnumerable<IConstantMetadata> Constants => CodeDomConstantMetadata.FromCodeElements(CodeType.Children, file);
-        public IEnumerable<IDelegateMetadata> AllDelegates => CodeDomDelegateMetadata.FromAllCodeElements(CodeType.Children, file);
-        public IEnumerable<IDelegateMetadata> Delegates => CodeDomDelegateMetadata.FromPublicCodeElements(CodeType.Children, file);
+        public IEnumerable<IDelegateMetadata> Delegates => CodeDomDelegateMetadata.FromCodeElements(CodeType.Children, file);
         public IEnumerable<IEventMetadata> Events => CodeDomEventMetadata.FromCodeElements(CodeType.Children, file);
         public IEnumerable<IFieldMetadata> Fields => CodeDomFieldMetadata.FromCodeElements(CodeType.Children, file);
         public IEnumerable<IInterfaceMetadata> Interfaces => CodeDomInterfaceMetadata.FromCodeElements(CodeType.Bases, file);
         public IEnumerable<IMethodMetadata> Methods => CodeDomMethodMetadata.FromCodeElements(CodeType.Children, file);
         public IEnumerable<IPropertyMetadata> Properties => CodeDomPropertyMetadata.FromCodeElements(CodeType.Children, file);
-        public IEnumerable<IClassMetadata> AllNestedClasses => CodeDomClassMetadata.FromAllCodeElements(CodeType.Members, file);
-        public IEnumerable<IClassMetadata> NestedClasses => CodeDomClassMetadata.FromPublicCodeElements(CodeType.Members, file);
+        public IEnumerable<IClassMetadata> NestedClasses => CodeDomClassMetadata.FromCodeElements(CodeType.Members, file);
         public IEnumerable<IEnumMetadata> NestedEnums => CodeDomEnumMetadata.FromCodeElements(CodeType.Members, file);
         public IEnumerable<IInterfaceMetadata> NestedInterfaces => CodeDomInterfaceMetadata.FromCodeElements(CodeType.Members, file);
 

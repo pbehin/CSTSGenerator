@@ -20,21 +20,14 @@ namespace Typewriter.Metadata.CodeDom
 
         public string Name => projectItem.Name;
         public string FullName => projectItem.FileNames[1];
-        public IEnumerable<IClassMetadata> AllClasses =>
-            CodeDomClassMetadata.FromAllCodeElements(projectItem.FileCodeModel.CodeElements, this)
-            .Concat(Namespaces.SelectMany(n => CodeDomClassMetadata.FromAllCodeElements(n.Members, this)));
-
+        
         public IEnumerable<IClassMetadata> Classes =>
-            CodeDomClassMetadata.FromPublicCodeElements(projectItem.FileCodeModel.CodeElements, this)
-            .Concat(Namespaces.SelectMany(n => CodeDomClassMetadata.FromPublicCodeElements(n.Members, this)));
-
-        public IEnumerable<IDelegateMetadata> AllDelegates =>
-                    CodeDomDelegateMetadata.FromAllCodeElements(projectItem.FileCodeModel.CodeElements, this)
-                    .Concat(Namespaces.SelectMany(n => CodeDomDelegateMetadata.FromAllCodeElements(n.Members, this)));
+            CodeDomClassMetadata.FromCodeElements(projectItem.FileCodeModel.CodeElements, this)
+            .Concat(Namespaces.SelectMany(n => CodeDomClassMetadata.FromCodeElements(n.Members, this)));
 
         public IEnumerable<IDelegateMetadata> Delegates =>
-                    CodeDomDelegateMetadata.FromPublicCodeElements(projectItem.FileCodeModel.CodeElements, this)
-                    .Concat(Namespaces.SelectMany(n => CodeDomDelegateMetadata.FromPublicCodeElements(n.Members, this)));
+                    CodeDomDelegateMetadata.FromCodeElements(projectItem.FileCodeModel.CodeElements, this)
+                    .Concat(Namespaces.SelectMany(n => CodeDomDelegateMetadata.FromCodeElements(n.Members, this)));
 
         public IEnumerable<IEnumMetadata> Enums =>
             CodeDomEnumMetadata.FromCodeElements(projectItem.FileCodeModel.CodeElements, this)

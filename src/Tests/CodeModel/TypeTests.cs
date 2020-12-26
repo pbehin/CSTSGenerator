@@ -143,18 +143,20 @@ namespace Typewriter.Tests.CodeModel
             var typeInfo = classInfo.Properties.First(p => p.Name == "Class").Type;
             var constantInfo = typeInfo.Constants.First();
 
-            typeInfo.Constants.Count.ShouldEqual(1);
+            typeInfo.Constants.Count.ShouldEqual(2);
             constantInfo.Name.ShouldEqual("PublicConstant");
         }
 
         [Fact]
         public void Expect_to_find_public_delegates()
         {
-            var classInfo = fileInfo.Classes.First();
+            var classes = fileInfo.Classes.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            var classInfo = classes.First();
             var typeInfo = classInfo.Properties.First(p => p.Name == "Class").Type;
-            var delegateInfo = typeInfo.Delegates.First();
+            var delegates = typeInfo.Delegates.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            var delegateInfo = delegates.First();
 
-            typeInfo.Delegates.Count.ShouldEqual(1);
+            delegates.Count.ShouldEqual(1);
             delegateInfo.Name.ShouldEqual("PublicDelegate");
         }
 

@@ -12,7 +12,7 @@ namespace Typewriter.Tests.TestInfrastructure
         public CodeDomFixture()
         {
             _solutionFileInfo = new FileInfo(Path.Combine(AppContext.BaseDirectory, @"..\..\..\..\Typewriter.sln"));
-            Dte = TestInfrastructure.Dte.GetInstance(_solutionFileInfo.FullName);
+            Dte = TestInfrastructure.Dte.GetNewInstance(_solutionFileInfo.FullName);
             Provider = new CodeDomMetadataProvider(Dte);
 
             // Handle threading errors when calling into Visual Studio.
@@ -21,16 +21,20 @@ namespace Typewriter.Tests.TestInfrastructure
 
         private FileInfo _solutionFileInfo;
 
-        public DTE Dte { get; }
+        public DTE Dte { get; } //=> TestInfrastructure.Dte.GetInstance(_solutionFileInfo.FullName);
         public IMetadataProvider Provider { get; }
         public string SolutionDirectory => Path.Combine(_solutionFileInfo.Directory.FullName, "src");
 
         public void Dispose()
         {
-            Dte.Quit(); 
             MessageFilter.Revoke();
         }
 
+        ~CodeDomFixture()
+        {
+            //TestInfrastructure.Dte.Quit();
+            Dte.Quit();
+        }
     }
 
     [CollectionDefinition(nameof(CodeDomFixture))]

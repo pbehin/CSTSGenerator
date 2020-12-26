@@ -31,8 +31,7 @@ namespace Typewriter.Metadata.CodeDom
         public IEnumerable<IInterfaceMetadata> Interfaces => FromCodeElements(_codeInterface.Bases, _file);
         public IEnumerable<IMethodMetadata> Methods => CodeDomMethodMetadata.FromCodeElements(_codeInterface.Children, _file);
         public IEnumerable<IPropertyMetadata> Properties => CodeDomPropertyMetadata.FromCodeElements(_codeInterface.Children, _file);
-        public IClassMetadata ContainingAllClass => CodeDomClassMetadata.FromAllCodeClass(_codeInterface.Parent as CodeClass2, _file);
-        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromAllCodeClass(_codeInterface.Parent as CodeClass2, _file);
+        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(_codeInterface.Parent as CodeClass2, _file);
 
         private string GetNamespace()
         {

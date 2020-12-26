@@ -1,8 +1,9 @@
 using EnvDTE;
 using EnvDTE80;
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using Typewriter.CodeModel;
+using Typewriter.Metadata.CodeDom.Extensions.Enums;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -23,9 +24,9 @@ namespace Typewriter.Metadata.CodeDom
         public string FullName => codeDelegate.FullName;
         public bool IsAbstract => false;
         public bool IsGeneric => codeDelegate.IsGeneric;
+        public AccessModifier AccessModifiers => codeDelegate.Access.ToAccessModifier();
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeDelegate.Attributes);
-        public IClassMetadata ContainingAllClass => CodeDomClassMetadata.FromAllCodeClass(codeDelegate.Parent as CodeClass2, file);
-        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromPublicCodeClass(codeDelegate.Parent as CodeClass2, file);
+        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(codeDelegate.Parent as CodeClass2, file);
         public IEnumerable<ITypeParameterMetadata> TypeParameters => CodeDomTypeParameterMetadata.FromFullName(GetFullDelegateName());
         public IEnumerable<IParameterMetadata> Parameters => CodeDomParameterMetadata.FromCodeElements(codeDelegate.Parameters, file);
         public ITypeMetadata Type => CodeDomTypeMetadata.FromCodeElement(codeDelegate, file);
@@ -48,20 +49,9 @@ namespace Typewriter.Metadata.CodeDom
             return new CodeDomDelegateMetadata(codeElement, file);
         }
 
-        internal static IEnumerable<IDelegateMetadata> FromPublicCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
+        internal static IEnumerable<IDelegateMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
         {
-            return FromCodeElements(codeElements, file, new[] { vsCMAccess.vsCMAccessPublic });
-        }
-
-        internal static IEnumerable<IDelegateMetadata> FromAllCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
-        {
-            var all = Enum.GetValues(typeof(vsCMAccess)).Cast<vsCMAccess>();
-            return FromCodeElements(codeElements, file, all);
-        }
-
-        internal static IEnumerable<IDelegateMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file, IEnumerable<vsCMAccess> vsCMAccess)
-        {
-            return codeElements.OfType<CodeDelegate2>().Where(d => vsCMAccess.Contains(d.Access)).Select(d => FromCodeDelegate(d, file));
+            return codeElements.OfType<CodeDelegate2>().Select(d => FromCodeDelegate(d, file));
         }
     }
 }

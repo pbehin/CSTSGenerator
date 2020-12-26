@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.CodeAnalysis;
+using Typewriter.CodeModel;
 
 namespace Typewriter.Metadata.Roslyn
 {
@@ -84,5 +86,39 @@ namespace Typewriter.Metadata.Roslyn
 
             return result;
         }
+
+        public static AccessModifier ToAccessModifier(this Accessibility accessibility)
+        {
+            AccessModifier returnValue = AccessModifier.Public;
+            switch (accessibility)
+            {
+                case Accessibility.NotApplicable:
+                    returnValue = AccessModifier.NotApplicable;
+                    break;
+                case Accessibility.Private:
+                    returnValue = AccessModifier.Private;
+                    break;
+                case Accessibility.ProtectedAndInternal:
+                    returnValue = AccessModifier.Protected | AccessModifier.Internal;
+                    break;
+                case Accessibility.Protected:
+                    returnValue = AccessModifier.Protected;
+                    break;
+                case Accessibility.Internal:
+                    returnValue = AccessModifier.Internal;
+                    break;
+                case Accessibility.ProtectedOrInternal:
+                    returnValue = AccessModifier.Protected | AccessModifier.Internal;
+                    break;
+                case Accessibility.Public:
+                    returnValue = AccessModifier.Public;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(accessibility), accessibility, null);
+            }
+
+            return returnValue;
+        }
+
     }
 }

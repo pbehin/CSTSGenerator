@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Linq;
 using Should;
+using Typewriter.CodeModel;
 using Typewriter.Tests.TestInfrastructure;
 using Xunit;
 using File = Typewriter.CodeModel.File;
@@ -42,24 +43,26 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_classes()
         {
-            fileInfo.Classes.Count.ShouldEqual(2);
+            var classes = fileInfo.Classes.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            classes.Count.ShouldEqual(2);
 
-            var classInfo1 = fileInfo.Classes.First();
+            var classInfo1 = classes.First();
             classInfo1.Name.ShouldEqual("PublicClassNoNamespace");
 
-            var classInfo2 = fileInfo.Classes.Last();
+            var classInfo2 = classes.Last();
             classInfo2.Name.ShouldEqual("PublicClass");
         }
 
         [Fact]
         public void Expect_to_find_public_delegates()
         {
-            fileInfo.Delegates.Count.ShouldEqual(2);
+            var delegates = fileInfo.Delegates.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            delegates.Count.ShouldEqual(2);
 
-            var delegateInfo1 = fileInfo.Delegates.First();
+            var delegateInfo1 = delegates.First();
             delegateInfo1.Name.ShouldEqual("PublicDelegateNoNamespace");
 
-            var delegateInfo2 = fileInfo.Delegates.Last();
+            var delegateInfo2 = delegates.Last();
             delegateInfo2.Name.ShouldEqual("PublicDelegate");
         }
 

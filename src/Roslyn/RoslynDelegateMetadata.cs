@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Typewriter.CodeModel;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.Roslyn
@@ -24,25 +25,13 @@ namespace Typewriter.Metadata.Roslyn
         public ITypeMetadata Type => methodSymbol == null ? null : RoslynTypeMetadata.FromTypeSymbol(methodSymbol.ReturnType);
         public bool IsAbstract => false;
         public bool IsGeneric => symbol.TypeParameters.Any();
+        public AccessModifier AccessModifiers => symbol.DeclaredAccessibility.ToAccessModifier();
         public IEnumerable<ITypeParameterMetadata> TypeParameters => RoslynTypeParameterMetadata.FromTypeParameterSymbols(symbol.TypeParameters);
         public IEnumerable<IParameterMetadata> Parameters => methodSymbol == null ? new IParameterMetadata[0] : RoslynParameterMetadata.FromParameterSymbols(methodSymbol.Parameters);
 
-        internal static IEnumerable<IDelegateMetadata> FromPublicNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols)
+        public static IEnumerable<IDelegateMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols)
         {
-            return FromNamedTypeSymbols(symbols, new[] { Accessibility.Public });
-        }
-
-        internal static IEnumerable<IDelegateMetadata> FromAllNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols)
-        {
-            var all = Enum.GetValues(typeof(Accessibility)).Cast<Accessibility>();
-            return FromNamedTypeSymbols(symbols, all);
-        }
-
-        public static IEnumerable<IDelegateMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols,
-            IEnumerable<Accessibility> declaredAccessibilities
-            )
-        {
-            return symbols.Where(s => declaredAccessibilities.Contains(s.DeclaredAccessibility)).Select(s => new RoslynDelegateMetadata(s));
+            return symbols.Select(s => new RoslynDelegateMetadata(s));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Typewriter.CodeModel;
 
 namespace Typewriter.Metadata.Interfaces
 {
@@ -24,5 +25,6 @@ namespace Typewriter.Metadata.Interfaces
         IEnumerable<IClassMetadata> NestedClasses { get; }
         IEnumerable<IEnumMetadata> NestedEnums { get; }
         IEnumerable<IInterfaceMetadata> NestedInterfaces { get; }
+        AccessModifier AccessModifiers { get; }
     }
 }

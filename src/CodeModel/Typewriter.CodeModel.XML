@@ -4,6 +4,36 @@
         <name>Typewriter.CodeModel</name>
     </assembly>
     <members>
+        <member name="T:Typewriter.CodeModel.AccessModifier">
+            <summary>
+            All class Access Modifier
+            </summary>
+        </member>
+        <member name="F:Typewriter.CodeModel.AccessModifier.NotApplicable">
+            <summary>
+            Access Modifier is not valid !!!
+            </summary>
+        </member>
+        <member name="F:Typewriter.CodeModel.AccessModifier.Public">
+            <summary>
+            Public Access Modifier
+            </summary>
+        </member>
+        <member name="F:Typewriter.CodeModel.AccessModifier.Private">
+            <summary>
+            Private Access Modifier
+            </summary>
+        </member>
+        <member name="F:Typewriter.CodeModel.AccessModifier.Protected">
+            <summary>
+            Protected Access Modifier
+            </summary>
+        </member>
+        <member name="F:Typewriter.CodeModel.AccessModifier.Internal">
+            <summary>
+            Internal Access Modifier
+            </summary>
+        </member>
         <member name="T:Typewriter.CodeModel.Attribute">
             <summary>
             Represents an attribute.
@@ -147,6 +177,11 @@
         <member name="P:Typewriter.CodeModel.Class.Interfaces">
             <summary>
             All interfaces implemented by the class.
+            </summary>
+        </member>
+        <member name="P:Typewriter.CodeModel.Class.AccessModifiers">
+            <summary>
+            Determines if the class is abstract.
             </summary>
         </member>
         <member name="P:Typewriter.CodeModel.Class.IsAbstract">
@@ -306,6 +341,11 @@
         <member name="P:Typewriter.CodeModel.Delegate.FullName">
             <summary>
             The full original name of the delegate including namespace and containing class names.
+            </summary>
+        </member>
+        <member name="P:Typewriter.CodeModel.Delegate.AccessModifiers">
+            <summary>
+            Determines if the class is abstract.
             </summary>
         </member>
         <member name="P:Typewriter.CodeModel.Delegate.IsGeneric">
@@ -644,24 +684,14 @@
             Represents a file.
             </summary>
         </member>
-        <member name="P:Typewriter.CodeModel.File.AllClasses">
+        <member name="P:Typewriter.CodeModel.File.Classes">
             <summary>
             All classes defined in the file.
             </summary>
         </member>
-        <member name="P:Typewriter.CodeModel.File.Classes">
-            <summary>
-            All public classes defined in the file.
-            </summary>
-        </member>
-        <member name="P:Typewriter.CodeModel.File.AllDelegates">
-            <summary>
-            All delegates defined in the file.
-            </summary>
-        </member>
         <member name="P:Typewriter.CodeModel.File.Delegates">
             <summary>
-            All public delegates defined in the file.
+            All delegates defined in the file.
             </summary>
         </member>
         <member name="P:Typewriter.CodeModel.File.Enums">

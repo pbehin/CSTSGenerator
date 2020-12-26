@@ -27,10 +27,8 @@ namespace Typewriter.Metadata.Roslyn
         public string Name => _document.Name;
         public string FullName => _document.FilePath;
 
-        public IEnumerable<IClassMetadata> Classes => RoslynClassMetadata.FromPublicNamedTypeSymbols(GetNamespaceChildNodes<ClassDeclarationSyntax>(), this);
-        public IEnumerable<IClassMetadata> AllClasses => RoslynClassMetadata.FromAllNamedTypeSymbols(GetNamespaceChildNodes<ClassDeclarationSyntax>(), this);
-        public IEnumerable<IDelegateMetadata> AllDelegates => RoslynDelegateMetadata.FromAllNamedTypeSymbols(GetNamespaceChildNodes<DelegateDeclarationSyntax>());
-        public IEnumerable<IDelegateMetadata> Delegates => RoslynDelegateMetadata.FromPublicNamedTypeSymbols(GetNamespaceChildNodes<DelegateDeclarationSyntax>());
+        public IEnumerable<IClassMetadata> Classes => RoslynClassMetadata.FromNamedTypeSymbols(GetNamespaceChildNodes<ClassDeclarationSyntax>(), this);
+        public IEnumerable<IDelegateMetadata> Delegates => RoslynDelegateMetadata.FromNamedTypeSymbols(GetNamespaceChildNodes<DelegateDeclarationSyntax>());
         public IEnumerable<IEnumMetadata> Enums => RoslynEnumMetadata.FromNamedTypeSymbols(GetNamespaceChildNodes<EnumDeclarationSyntax>());
         public IEnumerable<IInterfaceMetadata> Interfaces => RoslynInterfaceMetadata.FromNamedTypeSymbols(GetNamespaceChildNodes<InterfaceDeclarationSyntax>(), this);
 

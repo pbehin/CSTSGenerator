@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Typewriter.CodeModel;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.Roslyn
@@ -22,6 +23,7 @@ namespace Typewriter.Metadata.Roslyn
         public ITypeMetadata Type => RoslynTypeMetadata.FromTypeSymbol(symbol.ReturnType);
         public bool IsAbstract => symbol.IsAbstract;
         public bool IsGeneric => symbol.IsGenericMethod;
+        public AccessModifier AccessModifiers => symbol.DeclaredAccessibility.ToAccessModifier();
         public IEnumerable<ITypeParameterMetadata> TypeParameters => RoslynTypeParameterMetadata.FromTypeParameterSymbols(symbol.TypeParameters);
         public IEnumerable<IParameterMetadata> Parameters => RoslynParameterMetadata.FromParameterSymbols(symbol.Parameters);
 

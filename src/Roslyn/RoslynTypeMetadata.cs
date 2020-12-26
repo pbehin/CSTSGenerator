@@ -1,6 +1,7 @@
 using Microsoft.CodeAnalysis;
 using System.Collections.Generic;
 using System.Linq;
+using Typewriter.CodeModel;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.Roslyn
@@ -22,6 +23,7 @@ namespace Typewriter.Metadata.Roslyn
         public string Name => symbol.GetName() + (IsNullable ? "?" : string.Empty);
         public string FullName => symbol.GetFullName() + (IsNullable ? "?" : string.Empty);
         public bool IsAbstract => (symbol as INamedTypeSymbol)?.IsAbstract ?? false;
+        public AccessModifier AccessModifiers => symbol.DeclaredAccessibility.ToAccessModifier();
         public bool IsGeneric => (symbol as INamedTypeSymbol)?.TypeParameters.Any() ?? false;
         public bool IsDefined => symbol.Locations.Any(l => l.IsInSource);
         public bool IsValueTuple => symbol.Name == string.Empty && symbol.BaseType?.Name == "ValueType" && symbol.BaseType.ContainingNamespace.Name == "System";
@@ -33,15 +35,13 @@ namespace Typewriter.Metadata.Roslyn
         public IClassMetadata BaseClass => RoslynClassMetadata.FromNamedTypeSymbol(symbol.BaseType);
         public IClassMetadata ContainingClass => RoslynClassMetadata.FromNamedTypeSymbol(symbol.ContainingType);
         public IEnumerable<IConstantMetadata> Constants => RoslynConstantMetadata.FromFieldSymbols(symbol.GetMembers().OfType<IFieldSymbol>());
-        public IEnumerable<IDelegateMetadata> AllDelegates => RoslynDelegateMetadata.FromAllNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Delegate));
-        public IEnumerable<IDelegateMetadata> Delegates => RoslynDelegateMetadata.FromPublicNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Delegate));
+        public IEnumerable<IDelegateMetadata> Delegates => RoslynDelegateMetadata.FromNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Delegate));
         public IEnumerable<IEventMetadata> Events => RoslynEventMetadata.FromEventSymbols(symbol.GetMembers().OfType<IEventSymbol>());
         public IEnumerable<IFieldMetadata> Fields => RoslynFieldMetadata.FromFieldSymbols(symbol.GetMembers().OfType<IFieldSymbol>());
         public IEnumerable<IInterfaceMetadata> Interfaces => RoslynInterfaceMetadata.FromNamedTypeSymbols(symbol.Interfaces);
         public IEnumerable<IMethodMetadata> Methods => RoslynMethodMetadata.FromMethodSymbols(symbol.GetMembers().OfType<IMethodSymbol>());
         public IEnumerable<IPropertyMetadata> Properties => RoslynPropertyMetadata.FromPropertySymbol(symbol.GetMembers().OfType<IPropertySymbol>());
-        public IEnumerable<IClassMetadata> AllNestedClasses => RoslynClassMetadata.FromAllNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
-        public IEnumerable<IClassMetadata> NestedClasses => RoslynClassMetadata.FromPublicNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
+        public IEnumerable<IClassMetadata> NestedClasses => RoslynClassMetadata.FromNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Class));
         public IEnumerable<IEnumMetadata> NestedEnums => RoslynEnumMetadata.FromNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Enum));
         public IEnumerable<IInterfaceMetadata> NestedInterfaces => RoslynInterfaceMetadata.FromNamedTypeSymbols(symbol.GetMembers().OfType<INamedTypeSymbol>().Where(s => s.TypeKind == TypeKind.Interface));
         public IEnumerable<IFieldMetadata> TupleElements
@@ -150,6 +150,7 @@ namespace Typewriter.Metadata.Roslyn
         public string DocComment => null;
         public string Name => "Void";
         public string FullName => "System.Void";
+        public AccessModifier AccessModifiers => AccessModifier.NotApplicable;
         public bool IsAbstract => false;
         public bool IsEnum => false;
         public bool IsEnumerable => false;

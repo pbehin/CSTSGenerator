@@ -18,7 +18,7 @@ namespace Typewriter.Metadata.Roslyn
 
         public new static IEnumerable<IConstantMetadata> FromFieldSymbols(IEnumerable<IFieldSymbol> symbols)
         {
-            return symbols.Where(s => s.DeclaredAccessibility == Accessibility.Public && s.IsConst).Select(s => new RoslynConstantMetadata(s));
+            return symbols.Where(s =>s.IsConst).Select(s => new RoslynConstantMetadata(s));
         }
     }
 }

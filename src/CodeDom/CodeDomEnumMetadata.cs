@@ -24,8 +24,7 @@ namespace Typewriter.Metadata.CodeDom
         public ITypeMetadata Type => new LazyCodeDomTypeMetadata(_codeEnum.FullName, false, false, _file);
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(_codeEnum.Attributes);
         public IEnumerable<IEnumValueMetadata> Values => CodeDomEnumValueMetadata.FromCodeElements(_codeEnum.Members, _file);
-        public IClassMetadata ContainingAllClass => CodeDomClassMetadata.FromAllCodeClass(_codeEnum.Parent as CodeClass2, _file);
-        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromPublicCodeClass(_codeEnum.Parent as CodeClass2, _file);
+        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(_codeEnum.Parent as CodeClass2, _file);
 
         private string GetNamespace()
         {

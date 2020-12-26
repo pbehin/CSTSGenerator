@@ -27,7 +27,7 @@ namespace Typewriter.Metadata.CodeDom
 
         internal new static IEnumerable<IConstantMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
         {
-            return codeElements.OfType<CodeVariable2>().Where(v => v.IsConstant && v.Access == vsCMAccess.vsCMAccessPublic)
+            return codeElements.OfType<CodeVariable2>().Where(v => v.IsConstant)
                 .Select(v => new CodeDomConstantMetadata(v, file));
         }
     }

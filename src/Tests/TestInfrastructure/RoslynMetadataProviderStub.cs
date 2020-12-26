@@ -15,25 +15,27 @@ namespace Typewriter.Tests.TestInfrastructure
 {
     public class RoslynMetadataProviderStub : IMetadataProvider
     {
-        private readonly Project _project = null;
+        private readonly MSBuildWorkspace _workspace = null;
+        private Solution _solution;
 
-        public RoslynMetadataProviderStub(string projectPath)
+        public RoslynMetadataProviderStub(string solutionFilePath)
         {
-            _project = MSBuildWorkspace.Create().OpenProjectAsync(projectPath).Result;
+            _workspace = MSBuildWorkspace.Create();
+            _solution = _workspace.OpenSolutionAsync(solutionFilePath).Result.GetIsolatedSolution();
         }
 
         public IFileMetadata GetFile(string path, Settings settings, Action<string[]> requestRender)
         {
             
-            var document = _project.Solution.GetDocumentIdsWithFilePath(path).FirstOrDefault();
+            var document = _solution.GetDocumentIdsWithFilePath(path).FirstOrDefault();
             if (document != null)
             {
-                return new RoslynFileMetadata(_project.GetDocument(document), settings, requestRender);
+                return new RoslynFileMetadata(_solution.GetDocument(document), settings, requestRender);
             }
 
             return null;
         }
 
-        public Solution CurrentSolution => _project.Solution;
+        public Solution CurrentSolution => _solution;
     }
 }

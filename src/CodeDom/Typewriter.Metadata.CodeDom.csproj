@@ -60,6 +60,7 @@
     <Compile Include="CodeDomMetadataProvider.cs" />
     <Compile Include="CodeDomDelegateMetadata.cs" />
     <Compile Include="CodeDomTypeParameterMetadata.cs" />
+    <Compile Include="Extensions\Enums\EnumExtensions.cs" />
     <Compile Include="GenericTypeMetadata.cs" />
     <Compile Include="CodeDomInterfaceMetadata.cs" />
     <Compile Include="LazyCodeDomTypeMetadata.cs" />
@@ -80,6 +81,7 @@
       <Name>Typewriter.Metadata</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -73,7 +73,7 @@ jobs:
 
     - name: Setup dotnet
       uses: actions/setup-dotnet@v1
-     with:
+      with:
           dotnet-version: ${{ matrix.dotnet }}
       
     # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
@@ -105,7 +105,7 @@ jobs:
         Configuration: ${{ matrix.configuration }}
 
     - name: Run Tests
-     run: dotnet vstest $env:Test_Project_Dll_Path 
+      run: dotnet vstest $env:Test_Project_Dll_Path 
     
     #- name: Run Tests
     #  run: |

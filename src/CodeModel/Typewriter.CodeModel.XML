@@ -1004,6 +1004,16 @@
             Determines if the property is abstract.
             </summary>
         </member>
+        <member name="P:Typewriter.CodeModel.Property.IsStatic">
+            <summary>
+            Determines if the property is static.
+            </summary>
+        </member>
+        <member name="P:Typewriter.CodeModel.Property.AccessModifiers">
+            <summary>
+            Determines Access Modifier of property.
+            </summary>
+        </member>
         <member name="P:Typewriter.CodeModel.Property.name">
             <summary>
             The name of the property (camelCased).

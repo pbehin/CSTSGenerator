@@ -169,10 +169,11 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_properties()
         {
-            var classInfo = fileInfo.Classes.First();
-            var propertyInfo = classInfo.Properties.First();
-
-            classInfo.Properties.Count.ShouldEqual(1);
+            var classInfo = fileInfo.Classes.First(c=> c.AccessModifiers == AccessModifier.Public);
+            var properties = classInfo.Properties.Where(p=> !p.IsStatic && p.AccessModifiers == AccessModifier.Public).ToList();
+            var propertyInfo = properties.First(p=> !p.IsStatic);
+            
+            properties.Count.ShouldEqual(1);
             propertyInfo.Name.ShouldEqual("PublicProperty");
         }
 

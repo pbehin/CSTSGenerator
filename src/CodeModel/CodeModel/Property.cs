@@ -39,6 +39,17 @@ namespace Typewriter.CodeModel
         public abstract bool IsAbstract { get; }
 
         /// <summary>
+        /// Determines if the property is static.
+        /// </summary>
+        public abstract bool IsStatic { get; }
+
+        /// <summary>
+        /// Determines Access Modifier of property.
+        /// </summary>
+        public abstract AccessModifier AccessModifiers { get; }
+
+
+        /// <summary>
         /// The name of the property (camelCased).
         /// </summary>
         public abstract string name { get; }

@@ -24,6 +24,8 @@ namespace Typewriter.CodeModel.Implementation
         public override bool HasGetter => _metadata.HasGetter;
         public override bool HasSetter => _metadata.HasSetter;
         public override bool IsAbstract => _metadata.IsAbstract;
+        public override bool IsStatic => _metadata.IsStatic;
+        public override AccessModifier AccessModifiers => _metadata.AccessModifiers;
 
         private AttributeCollection _attributes;
         public override AttributeCollection Attributes => _attributes ?? (_attributes = AttributeImpl.FromMetadata(_metadata.Attributes, this));

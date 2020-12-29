@@ -35,7 +35,7 @@ namespace Typewriter.Generation.Controllers
             
             if (_templates == null)
             {
-                var items = GetProjectItems();
+                var items = GetProjectItems(x=> true);
                 _templates = items.Select(i =>
                 {
                     try
@@ -85,9 +85,9 @@ namespace Typewriter.Generation.Controllers
             _templates = null;
         }
 
-        private IEnumerable<ProjectItem> GetProjectItems()
+        private IEnumerable<ProjectItem> GetProjectItems(Predicate<string> fileNameFilter)
         {
-            var result = _dte.Solution.AllProjects().SelectMany(m => m.AllProjectItems(Constants.TemplateExtension));
+            var result = _dte.Solution.AllProjects().SelectMany(m => m.AllProjectItems(fileNameFilter, Constants.TemplateExtension));
             
             return result;
         }

@@ -1305,9 +1305,20 @@
             Note: Including all projects can have a large impact on performance in large solutions.
             </summary>
         </member>
+        <member name="P:Typewriter.Configuration.Settings.FileNameFilter">
+            <summary>
+            Filter files when rendering the template.
+            </summary>
+        </member>
         <member name="P:Typewriter.Configuration.Settings.OutputExtension">
             <summary>
             Gets or sets the file extension for output files.
+            </summary>
+        </member>
+        <member name="P:Typewriter.Configuration.Settings.OutputFolderFactory">
+            <summary>
+            Gets or sets a folder name factory for the template.
+            The factory is called for each rendered file to determine the output folder
             </summary>
         </member>
         <member name="P:Typewriter.Configuration.Settings.OutputFilenameFactory">

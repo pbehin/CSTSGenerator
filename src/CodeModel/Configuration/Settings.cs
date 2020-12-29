@@ -1,5 +1,6 @@
 ﻿using System;
-using Typewriter.CodeModel;
+using System.IO;
+using File = Typewriter.CodeModel.File;
 
 namespace Typewriter.Configuration
 {
@@ -30,9 +31,20 @@ namespace Typewriter.Configuration
         public abstract Settings IncludeAllProjects();
 
         /// <summary>
+        /// Filter files when rendering the template.
+        /// </summary>
+        public Predicate<string> FileNameFilter { get; set; } = fileName => true;
+
+        /// <summary>
         /// Gets or sets the file extension for output files.
         /// </summary>
         public string OutputExtension { get; set; } = ".ts";
+
+        /// <summary>
+        /// Gets or sets a folder name factory for the template.
+        /// The factory is called for each rendered file to determine the output folder
+        /// </summary>
+        public Func<File, DirectoryInfo> OutputFolderFactory { get; set; }
 
         /// <summary>
         /// Gets or sets a filename factory for the template.
@@ -44,6 +56,6 @@ namespace Typewriter.Configuration
         /// <summary>
         /// 
         /// </summary>
-        public PartialRenderingMode PartialRenderingMode { get; set; } = PartialRenderingMode.Partial;
+        public PartialRenderingMode PartialRenderingMode { get; set; } = PartialRenderingMode.Combined;
     }
 }

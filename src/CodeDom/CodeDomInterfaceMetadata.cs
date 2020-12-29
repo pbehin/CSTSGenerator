@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
+using Typewriter.CodeModel;
+using Typewriter.Metadata.CodeDom.Extensions.Enums;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -22,6 +24,7 @@ namespace Typewriter.Metadata.CodeDom
         public string FullName => _codeInterface.FullName;
         public string Namespace => GetNamespace();
         public bool IsGeneric => _codeInterface.FullName.EndsWith(">");
+        public AccessModifier AccessModifiers => _codeInterface.Access.ToAccessModifier();
 
         public ITypeMetadata Type => new LazyCodeDomTypeMetadata(_codeInterface.FullName, false, false, _file);
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(_codeInterface.Attributes);
@@ -41,7 +44,7 @@ namespace Typewriter.Metadata.CodeDom
 
         internal static IEnumerable<IInterfaceMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
         {
-            return codeElements.OfType<CodeInterface2>().Where(i => i.Access == vsCMAccess.vsCMAccessPublic).Select(i => new CodeDomInterfaceMetadata(i, file));
+            return codeElements.OfType<CodeInterface2>().Select(i => new CodeDomInterfaceMetadata(i, file));
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Typewriter.CodeModel.Implementation
         public override string FullName => _metadata.FullName;
         public override string Namespace => _metadata.Namespace;
         public override bool IsGeneric => _metadata.IsGeneric;
+        public override AccessModifier AccessModifiers => _metadata.AccessModifiers;
 
         private Type _type;
         protected override Type Type => _type ?? (_type = TypeImpl.FromMetadata(_metadata.Type, Parent));

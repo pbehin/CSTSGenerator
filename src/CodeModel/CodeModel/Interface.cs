@@ -96,6 +96,11 @@ namespace Typewriter.CodeModel
         }
 
         protected abstract Type Type { get; }
+        
+        /// <summary>
+        /// Determines if the class is abstract.
+        /// </summary>
+        public abstract AccessModifier AccessModifiers { get; }
 
         /// <summary>
         /// Converts the current instance to a Type.

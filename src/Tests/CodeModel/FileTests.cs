@@ -81,12 +81,13 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_interfaces()
         {
-            fileInfo.Interfaces.Count.ShouldEqual(2);
+            var publicInterfaces = fileInfo.Interfaces.Where(i => i.AccessModifiers == AccessModifier.Public).ToList();
+            publicInterfaces.Count.ShouldEqual(2);
 
-            var interfaceInfo1 = fileInfo.Interfaces.First();
+            var interfaceInfo1 = publicInterfaces.First();
             interfaceInfo1.Name.ShouldEqual("PublicInterfaceNoNamespace");
 
-            var interfaceInfo2 = fileInfo.Interfaces.Last();
+            var interfaceInfo2 = publicInterfaces.Last();
             interfaceInfo2.Name.ShouldEqual("PublicInterface");
         }
     }

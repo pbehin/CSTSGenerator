@@ -803,6 +803,11 @@
             Converts the current instance to string.
             </summary>
         </member>
+        <member name="P:Typewriter.CodeModel.Interface.AccessModifiers">
+            <summary>
+            Determines if the class is abstract.
+            </summary>
+        </member>
         <member name="M:Typewriter.CodeModel.Interface.op_Implicit(Typewriter.CodeModel.Interface)~Typewriter.CodeModel.Type">
             <summary>
             Converts the current instance to a Type.

@@ -67,6 +67,8 @@ namespace Typewriter.Tests.CodeModel.Support
         public GenericClassInfo<string> GenericClass { get; set; }
         public IInterfaceInfo Interface { get; set; }
 
+        public ICollection<string> ve7cac2f18fe0449bb53b3fa2b3f4e4f7;
+        public ConsoleColor v79b069e3c7704a92b7c5b6a1e4608b1d;
     }
 
     public class GenericPropertyInfo<T>

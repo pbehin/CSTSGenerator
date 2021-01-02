@@ -42,6 +42,11 @@ namespace Typewriter.Tests.CodeModel.Support
         public void DefaultValueParameter(string nullValue = null, string stringValue = "str\\ing\"quotes\"", bool boolValue = true)
         {
         }
+
+        public void v3e0e028b491e4862b060a376dc3ee333;
+        public System.Collections.Generic.ICollection<byte> v257858d5401a4ea78b35b99225ce1d5e;
+        public int v11371c95eb7745b38e8523a4b69c4208;
+        public string v407f49a208bd467b874dde25835c56f1;
     }
 
     public class GenericMethodInfo<T>

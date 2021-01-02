@@ -10,13 +10,17 @@ namespace Typewriter.Tests.CodeModel.Support
         /// summary
         /// </summary>
         public string GetterOnly { get; }
-        public string SetterOnly { set { } }
+
+        public string SetterOnly
+        {
+            set { }
+        }
+
         public string PrivateGetter { private get; set; }
         public string PrivateSetter { get; private set; }
 
         // Primitive types
-        [AttributeInfo]
-        public bool Bool { get; set; }
+        [AttributeInfo] public bool Bool { get; set; }
         public char Char { get; set; }
         public string String { get; set; }
         public byte Byte { get; set; }
@@ -67,8 +71,6 @@ namespace Typewriter.Tests.CodeModel.Support
         public GenericClassInfo<string> GenericClass { get; set; }
         public IInterfaceInfo Interface { get; set; }
 
-        public ICollection<string> ve7cac2f18fe0449bb53b3fa2b3f4e4f7;
-        public ConsoleColor v79b069e3c7704a92b7c5b6a1e4608b1d;
     }
 
     public class GenericPropertyInfo<T>

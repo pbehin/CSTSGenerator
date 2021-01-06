@@ -39,7 +39,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Typewriter.ItemTemplates</RootNamespace>
     <AssemblyName>Typewriter.ItemTemplates</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <GeneratePkgDefFile>false</GeneratePkgDefFile>
     <IncludeAssemblyInVSIXContainer>false</IncludeAssemblyInVSIXContainer>

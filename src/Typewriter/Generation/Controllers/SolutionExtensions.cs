@@ -30,12 +30,12 @@ namespace Typewriter.Generation.Controllers
             return GetProjects(solution.Projects);
         }
 
-        public static IEnumerable<ProjectItem> AllProjectItems(this Project project, string extension)
+        public static IEnumerable<ProjectItem> AllProjectItems(this Project project, Predicate<string> fileNameFilter, string extension)
         {
             if (project.ProjectItems == null)
                 return Enumerable.Empty<ProjectItem>();
 
-            return GetProjectItems(project.ProjectItems, extension);
+            return GetProjectItems(project.ProjectItems, fileNameFilter, extension);
         }
 
         private static IEnumerable<Project> GetProjects(Projects projects)
@@ -99,47 +99,50 @@ namespace Typewriter.Generation.Controllers
             return list;
         }
 
-        private static IEnumerable<ProjectItem> GetProjectItems(ProjectItems projectItems, string extension)
+        private static IEnumerable<ProjectItem> GetProjectItems(ProjectItems projectItems, Predicate<string> fileNameFilter, string extension)
         {
             foreach (ProjectItem item in projectItems)
             {
-                if (item.Name.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase))
+                var t = item.Path();
+                if (item.Name.EndsWith(extension, StringComparison.InvariantCultureIgnoreCase) &&
+                fileNameFilter(item.Path())
+                    )
                 {
                     yield return item;
                 }
 
-                if (item.ProjectItems != null && item.ProjectItems.Count>0)
+                if (item.ProjectItems != null && item.ProjectItems.Count > 0)
                 {
-                    foreach (var subitem in GetProjectItems(item.ProjectItems, extension))
+                    foreach (var subitem in GetProjectItems(item.ProjectItems, fileNameFilter, extension))
                     {
                         yield return subitem;
                     }
                 }
             }
-            
+
         }
 
 
-        public static IEnumerable<ProjectItem> GetReferencedProjectItems(this VSProject vsproject, string extension)
+        public static IEnumerable<ProjectItem> GetReferencedProjectItems(this VSProject vsproject, Predicate<string> fileNameFilter, string extension)
         {
-            
+
             foreach (Reference reference in vsproject.References)
             {
                 var sp = reference.SourceProject;
                 if (sp != null)
                 {
-                    foreach (var item in sp.AllProjectItems(extension))
+                    foreach (var item in sp.AllProjectItems(fileNameFilter, extension))
                     {
                         yield return item;
                     }
                 }
             }
 
-            foreach (var item in vsproject.Project.AllProjectItems(extension))
+            foreach (var item in vsproject.Project.AllProjectItems(fileNameFilter, extension))
             {
                 yield return item;
             }
-            
+
         }
 
         public static void ForEach<T>(this IEnumerable<T> items, Action<T> action)

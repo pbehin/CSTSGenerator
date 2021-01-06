@@ -1,71 +1,95 @@
 ﻿using System;
-using System.Runtime.InteropServices;
-using System.Runtime.InteropServices.ComTypes;
 using EnvDTE;
 
 namespace Typewriter.Tests.TestInfrastructure
 {
     internal static class Dte
     {
-        [DllImport("ole32.dll")]
-        private static extern int GetRunningObjectTable(uint dwReserved, out IRunningObjectTable pprot);
-
-        [DllImport("ole32.dll")]
-        private static extern int CreateBindCtx(uint dwReserved, out IBindCtx ppbc);
+        private static DTE _dte;
+        private static readonly object LockObj = new object();
 
         internal static DTE GetInstance(string solution)
         {
-            const string visualStudioProgId = "!VisualStudio.DTE.";
-
-            IRunningObjectTable runningObjectTable = null;
-            IEnumMoniker enumMoniker = null;
-            IBindCtx bindCtx = null;
-
-            try
+            if (_dte == null)
             {
-                Marshal.ThrowExceptionForHR(GetRunningObjectTable(0, out runningObjectTable));
-                runningObjectTable.EnumRunning(out enumMoniker);
-
-                IMoniker[] monikers = new IMoniker[1];
-                enumMoniker.Reset();
-
-                Marshal.ThrowExceptionForHR(CreateBindCtx(0, out bindCtx));
-
-                while (enumMoniker.Next(1, monikers, IntPtr.Zero) == 0)
+                lock (LockObj)
                 {
-                    string displayName;
-                    monikers[0].GetDisplayName(bindCtx, null, out displayName);
-
-                    if (displayName.StartsWith(visualStudioProgId))
+                    if (_dte != null) return _dte;
+                    Type dteType = null;
+                    for (int i = 20; i > 10; i--)
                     {
-                        object o;
-                        Marshal.ThrowExceptionForHR(runningObjectTable.GetObject(monikers[0], out o));
-
-                        var d = (DTE)o;
-
-                        if (d.Solution.FullName.EndsWith(solution, StringComparison.InvariantCultureIgnoreCase)) return d;
+                        try
+                        {
+                            dteType = Type.GetTypeFromProgID($"VisualStudio.DTE.{i}.0", true);
+                            if (dteType != null)
+                                break;
+                        }
+                        catch
+                        {
+                            // ignored
+                        }
                     }
+
+                    if (dteType == null)
+                        throw new Exception("Cannot find Dte Type.");
+                    var temp_dte = (DTE)Activator.CreateInstance(dteType);
+                    if (temp_dte == null)
+                        throw new TypeAccessException("Cannot Create Instance of DTE.");
+                    try
+                    {
+                        temp_dte.Solution.Open(solution);
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception("Cannot Open Solution.", e);
+                    }
+
+                    _dte = temp_dte;
                 }
             }
-            finally
+            return _dte;
+
+        }
+        internal static DTE GetNewInstance(string solution)
+        {
+            Type dteType = null;
+
+            for (int i = 20; i > 10; i--)
             {
-                if (runningObjectTable != null)
+                try
                 {
-                    Marshal.ReleaseComObject(runningObjectTable);
+                    dteType = Type.GetTypeFromProgID($"VisualStudio.DTE.{i}.0", true);
+                    if (dteType != null)
+                        break;
                 }
+                catch
+                {
+                    // ignored
+                }
+            }
 
-                if (enumMoniker != null)
-                {
-                    Marshal.ReleaseComObject(enumMoniker);
-                }
-
-                if (bindCtx != null)
-                {
-                    Marshal.ReleaseComObject(bindCtx);
-                }
+            if (dteType == null)
+                throw new Exception("Cannot find Dte Type.");
+            var temp_dte = (DTE)Activator.CreateInstance(dteType);
+            if (temp_dte == null)
+                throw new TypeAccessException("Cannot Create Instance of DTE.");
+            try
+            {
+                temp_dte.Solution.Open(solution);
+                return temp_dte;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Cannot Open Solution.", e);
             }
 
             return null;
+
+        }
+
+        public static void Quit()
+        {
+            _dte.Quit();
         }
     }
 }

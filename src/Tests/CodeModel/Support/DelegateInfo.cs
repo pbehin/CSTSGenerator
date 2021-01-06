@@ -18,6 +18,7 @@ namespace Typewriter.Tests.CodeModel.Support
         public delegate System.Threading.Tasks.Task Task();
         public delegate Task<string> TaskString();
         public delegate Task<Nullable<int>> TaskNullableInt();
+
     }
 
     public class GenericDelegateInfo<T>

@@ -14,7 +14,6 @@ namespace Typewriter.Tests.TestInfrastructure
 {
     public abstract class TestBase
     {
-        protected readonly DTE dte;
         protected readonly IMetadataProvider metadataProvider;
 
         protected readonly bool isRoslyn;
@@ -22,18 +21,19 @@ namespace Typewriter.Tests.TestInfrastructure
 
         protected TestBase(ITestFixture fixture)
         {
-            this.dte = fixture.Dte;
+            Fixture = fixture;
             this.metadataProvider = fixture.Provider;
 
             this.isRoslyn = fixture is RoslynFixture;
             this.isCodeDom = fixture is CodeDomFixture;
         }
-        
-        protected string SolutionDirectory => Path.Combine(new FileInfo(dte.Solution.FileName).Directory?.FullName, "src");
+
+        protected string SolutionDirectory => Fixture.SolutionDirectory;
+        public ITestFixture Fixture { get; set; }
 
         protected ProjectItem GetProjectItem(string path)
         {
-            return dte.Solution.FindProjectItem(Path.Combine(SolutionDirectory, path));
+            return Fixture.Dte.Solution.FindProjectItem(Path.Combine(SolutionDirectory, path));
         }
 
         protected string GetFileContents(string path)

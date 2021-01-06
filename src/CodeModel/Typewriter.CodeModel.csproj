@@ -45,6 +45,7 @@
     <Compile Include="..\Typewriter\Properties\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CodeModel\AccessModifier.cs" />
     <Compile Include="CodeModel\Attribute.cs" />
     <Compile Include="Attributes\ContextAttribute.cs" />
     <Compile Include="Attributes\PropertyAttribute.cs" />

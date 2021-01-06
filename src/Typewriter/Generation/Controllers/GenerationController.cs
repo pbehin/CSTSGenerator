@@ -59,10 +59,12 @@ namespace Typewriter.Generation.Controllers
                             continue;
                         }
 
+                        Log.Debug("Start processing : {0}...", path);
                         var file = new FileImpl(metadata);
 
                         template.RenderFile(file);
 
+                        Log.Debug("End processing : {0}...", path);
                         if (template.HasCompileException)
                         {
                             break;

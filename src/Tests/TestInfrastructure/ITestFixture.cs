@@ -8,5 +8,6 @@ namespace Typewriter.Tests.TestInfrastructure
     {
         DTE Dte { get; }
         IMetadataProvider Provider { get; }
+        string SolutionDirectory { get; }
     }
 }

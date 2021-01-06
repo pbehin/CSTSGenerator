@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
+using Typewriter.CodeModel;
+using Typewriter.Metadata.CodeDom.Extensions.Enums;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -22,6 +24,7 @@ namespace Typewriter.Metadata.CodeDom
         public string FullName => codeFunction.FullName;
         public bool IsGeneric => codeFunction.IsGeneric;
         public bool IsAbstract => codeFunction.MustImplement;
+        public AccessModifier AccessModifiers => codeFunction.Access.ToAccessModifier();
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeFunction.Attributes);
         public IEnumerable<ITypeParameterMetadata> TypeParameters => CodeDomTypeParameterMetadata.FromFullName(GetFullMethodName());
         public IEnumerable<IParameterMetadata> Parameters => CodeDomParameterMetadata.FromCodeElements(codeFunction.Parameters, file);

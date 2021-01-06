@@ -24,7 +24,7 @@ namespace Typewriter.Generation
         private Lazy<SettingsImpl> _configuration;
         private bool _templateCompileException;
         private bool _templateCompiled;
-        
+
         public Settings Settings => _configuration.Value;
 
         public Template(ProjectItem projectItem)
@@ -55,8 +55,8 @@ namespace Typewriter.Generation
 
                if (!_template.IsValueCreated)
                {
-                    //force initialize template so _customExtensions will be loaded
-                    var templateValue = _template.Value;
+                   //force initialize template so _customExtensions will be loaded
+                   var templateValue = _template.Value;
                }
 
                var templateClass = _customExtensions.FirstOrDefault();
@@ -96,7 +96,7 @@ namespace Typewriter.Generation
         public ICollection<string> GetFilesToRender()
         {
             var projects = _projectItem.DTE.Solution.AllProjects().Where(m => _configuration.Value.IncludedProjects.Any(p => m.FullName.Equals(p, StringComparison.OrdinalIgnoreCase)));
-            return projects.SelectMany(m => m.AllProjectItems(Constants.CsExtension)).Select(m => m.Path()).ToList();
+            return projects.SelectMany(m => m.AllProjectItems(_configuration.Value.FileNameFilter, Constants.CsExtension)).Select(m => m.Path()).ToList();
         }
 
         public bool ShouldRenderFile(string filename)
@@ -178,7 +178,7 @@ namespace Typewriter.Generation
                 {
                     try
                     {
-                        item = _projectItem.ProjectItems.AddFromFile(outputPath);
+                        item = _projectItem.Collection.AddFromFile(outputPath);
                     }
                     catch (Exception exception)
                     {
@@ -261,7 +261,7 @@ namespace Typewriter.Generation
 
         private ProjectItem GetExistingItem(string path)
         {
-            foreach (ProjectItem item in _projectItem.ProjectItems)
+            foreach (ProjectItem item in _projectItem.Collection)
             {
                 try
                 {
@@ -282,7 +282,7 @@ namespace Typewriter.Generation
         private string GetOutputPath(File file)
         {
             var path = file.FullName;
-            var directory = Path.GetDirectoryName(_templatePath);
+            var directory = GetOutputDirectory(file);
             var filename = GetOutputFilename(file, path);
             var outputPath = Path.Combine(directory, filename);
 
@@ -306,6 +306,18 @@ namespace Typewriter.Generation
             }
 
             throw new Exception("GetOutputPath");
+        }
+
+        private string GetOutputDirectory(File file)
+        {
+            var defaultPath = Path.GetDirectoryName(_templatePath);
+            if (_configuration.Value.OutputFolderFactory == null) return defaultPath;
+
+            var directoryInfo = _configuration.Value.OutputFolderFactory(file);
+            
+            if (!directoryInfo.Exists)
+                Directory.CreateDirectory(directoryInfo.FullName);
+            return directoryInfo.FullName;
         }
 
         private string GetOutputFilename(File file, string sourcePath)
@@ -370,7 +382,7 @@ namespace Typewriter.Generation
 
         private ProjectItem FindProjectItem(string path)
         {
-            foreach (ProjectItem item in _projectItem.ProjectItems)
+            foreach (ProjectItem item in _projectItem.Collection)
             {
                 try
                 {

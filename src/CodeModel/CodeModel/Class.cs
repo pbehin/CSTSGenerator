@@ -61,6 +61,11 @@ namespace Typewriter.CodeModel
         /// <summary>
         /// Determines if the class is abstract.
         /// </summary>
+        public abstract AccessModifier AccessModifiers { get; }
+
+        /// <summary>
+        /// Determines if the class is abstract.
+        /// </summary>
         public abstract bool IsAbstract { get; }
 
         /// <summary>

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
+using Typewriter.CodeModel;
+using Typewriter.Metadata.CodeDom.Extensions.Enums;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -30,6 +32,7 @@ namespace Typewriter.Metadata.CodeDom
         public ITypeMetadata Type => this;
 
         public bool IsAbstract => (codeType as CodeClass2)?.IsAbstract ?? false;
+        public AccessModifier AccessModifiers => codeType.Access.ToAccessModifier();
         public bool IsEnum => CodeType.Kind == vsCMElement.vsCMElementEnum;
         public bool IsEnumerable => IsCollection(FullName);
         public bool IsGeneric => FullName.IndexOf("<", StringComparison.Ordinal) > -1 && IsNullable == false;

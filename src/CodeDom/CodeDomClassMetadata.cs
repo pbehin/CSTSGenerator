@@ -1,7 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
+using Typewriter.CodeModel;
+using Typewriter.Metadata.CodeDom.Extensions.Enums;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -22,10 +25,11 @@ namespace Typewriter.Metadata.CodeDom
         public string FullName => codeClass.FullName;
         public string Namespace => GetNamespace();
         public ITypeMetadata Type => new LazyCodeDomTypeMetadata(codeClass.FullName, false, false, file);
+        public AccessModifier AccessModifiers => codeClass.Access.ToAccessModifier();
         public bool IsAbstract => codeClass.IsAbstract;
         public bool IsGeneric => codeClass.IsGeneric;
-        public IClassMetadata BaseClass => CodeDomClassMetadata.FromCodeElements(codeClass.Bases, file).FirstOrDefault();
-        public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(codeClass.Parent as CodeClass2, file);
+        public IClassMetadata BaseClass => FromCodeElements(codeClass.Bases, file).FirstOrDefault();
+        public IClassMetadata ContainingClass => FromCodeClass(codeClass.Parent as CodeClass2, file);
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeClass.Attributes);
         public IEnumerable<IConstantMetadata> Constants => CodeDomConstantMetadata.FromCodeElements(codeClass.Children, file);
         public IEnumerable<IDelegateMetadata> Delegates => CodeDomDelegateMetadata.FromCodeElements(codeClass.Children, file);
@@ -36,7 +40,7 @@ namespace Typewriter.Metadata.CodeDom
         public IEnumerable<IInterfaceMetadata> Interfaces => CodeDomInterfaceMetadata.FromCodeElements(codeClass.ImplementedInterfaces, file);
         public IEnumerable<IMethodMetadata> Methods => CodeDomMethodMetadata.FromCodeElements(codeClass.Children, file);
         public IEnumerable<IPropertyMetadata> Properties => CodeDomPropertyMetadata.FromCodeElements(codeClass.Children, file);
-        public IEnumerable<IClassMetadata> NestedClasses => CodeDomClassMetadata.FromCodeElements(codeClass.Members, file);
+        public IEnumerable<IClassMetadata> NestedClasses => FromCodeElements(codeClass.Members, file);
         public IEnumerable<IEnumMetadata> NestedEnums => CodeDomEnumMetadata.FromCodeElements(codeClass.Members, file);
         public IEnumerable<IInterfaceMetadata> NestedInterfaces => CodeDomInterfaceMetadata.FromCodeElements(codeClass.Members, file);
 
@@ -48,12 +52,12 @@ namespace Typewriter.Metadata.CodeDom
 
         internal static IEnumerable<IClassMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
         {
-            return codeElements.OfType<CodeClass2>().Where(c => c.Access == vsCMAccess.vsCMAccessPublic && c.FullName != "System.Object").Select(c => new CodeDomClassMetadata(c, file));
+            return codeElements.OfType<CodeClass2>().Where(c => c.FullName != "System.Object").Select(c => new CodeDomClassMetadata(c, file));
         }
 
         internal static IClassMetadata FromCodeClass(CodeClass2 codeClass, CodeDomFileMetadata file)
         {
-            return codeClass == null || codeClass.Access != vsCMAccess.vsCMAccessPublic || codeClass.FullName == "System.Object" ? null : new CodeDomClassMetadata(codeClass, file);
+            return codeClass == null || codeClass.FullName == "System.Object" ? null : new CodeDomClassMetadata(codeClass, file);
         }
     }
 }

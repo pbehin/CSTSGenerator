@@ -24,6 +24,11 @@ namespace Typewriter.CodeModel
         public abstract string FullName { get; }
 
         /// <summary>
+        /// Determines if the class is abstract.
+        /// </summary>
+        public abstract AccessModifier AccessModifiers { get; }
+        
+        /// <summary>
         /// Determines if the delegate is generic.
         /// </summary>
         public abstract bool IsGeneric { get; }

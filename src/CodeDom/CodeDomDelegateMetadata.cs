@@ -1,9 +1,9 @@
-using System;
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Linq;
 using EnvDTE;
 using EnvDTE80;
+using System.Collections.Generic;
+using System.Linq;
+using Typewriter.CodeModel;
+using Typewriter.Metadata.CodeDom.Extensions.Enums;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -24,6 +24,7 @@ namespace Typewriter.Metadata.CodeDom
         public string FullName => codeDelegate.FullName;
         public bool IsAbstract => false;
         public bool IsGeneric => codeDelegate.IsGeneric;
+        public AccessModifier AccessModifiers => codeDelegate.Access.ToAccessModifier();
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeDelegate.Attributes);
         public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(codeDelegate.Parent as CodeClass2, file);
         public IEnumerable<ITypeParameterMetadata> TypeParameters => CodeDomTypeParameterMetadata.FromFullName(GetFullDelegateName());
@@ -50,7 +51,7 @@ namespace Typewriter.Metadata.CodeDom
 
         internal static IEnumerable<IDelegateMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
         {
-            return codeElements.OfType<CodeDelegate2>().Where(d => d.Access == vsCMAccess.vsCMAccessPublic).Select(d => FromCodeDelegate(d, file));
+            return codeElements.OfType<CodeDelegate2>().Select(d => FromCodeDelegate(d, file));
         }
     }
 }

@@ -60,6 +60,7 @@
     <Compile Include="CodeDomMetadataProvider.cs" />
     <Compile Include="CodeDomDelegateMetadata.cs" />
     <Compile Include="CodeDomTypeParameterMetadata.cs" />
+    <Compile Include="Extensions\Enums\EnumExtensions.cs" />
     <Compile Include="GenericTypeMetadata.cs" />
     <Compile Include="CodeDomInterfaceMetadata.cs" />
     <Compile Include="LazyCodeDomTypeMetadata.cs" />

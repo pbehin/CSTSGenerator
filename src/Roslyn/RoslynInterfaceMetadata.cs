@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Typewriter.CodeModel;
 using Typewriter.Configuration;
 using Typewriter.Metadata.Interfaces;
 
@@ -42,6 +43,7 @@ namespace Typewriter.Metadata.Roslyn
         public string Name => _symbol.Name;
         public string FullName => _symbol.ToDisplayString();
         public bool IsGeneric => _symbol.TypeParameters.Any();
+        public AccessModifier AccessModifiers => _symbol.DeclaredAccessibility.ToAccessModifier();
         public string Namespace => _symbol.GetNamespace();
 
         public ITypeMetadata Type => RoslynTypeMetadata.FromTypeSymbol(_symbol);
@@ -57,7 +59,7 @@ namespace Typewriter.Metadata.Roslyn
 
         public static IEnumerable<IInterfaceMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols, RoslynFileMetadata file = null)
         {
-            return symbols.Where(s => s.DeclaredAccessibility == Accessibility.Public).Select(s => new RoslynInterfaceMetadata(s, file));
+            return symbols.Select(s => new RoslynInterfaceMetadata(s, file));
         }
     }
 }

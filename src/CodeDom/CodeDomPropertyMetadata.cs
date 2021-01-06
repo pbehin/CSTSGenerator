@@ -2,6 +2,8 @@
 using System.Linq;
 using EnvDTE;
 using EnvDTE80;
+using Typewriter.CodeModel;
+using Typewriter.Metadata.CodeDom.Extensions.Enums;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -25,12 +27,16 @@ namespace Typewriter.Metadata.CodeDom
         public bool IsAbstract => 
             (codeProperty.Getter != null && codeProperty.Getter.MustImplement) || 
             (codeProperty.Setter != null && codeProperty.Setter.MustImplement);
+
+        public bool IsStatic => codeProperty.IsShared;
+
+        public AccessModifier AccessModifiers => codeProperty.Access.ToAccessModifier();
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeProperty.Attributes);
         public ITypeMetadata Type => CodeDomTypeMetadata.FromCodeElement(codeProperty, file);
         
         internal static IEnumerable<IPropertyMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
         {
-            return codeElements.OfType<CodeProperty2>().Where(p => p.Access == vsCMAccess.vsCMAccessPublic && p.IsShared == false).Select(p => new CodeDomPropertyMetadata(p, file));
+            return codeElements.OfType<CodeProperty2>().Select(p => new CodeDomPropertyMetadata(p, file));
         }
     }
 }

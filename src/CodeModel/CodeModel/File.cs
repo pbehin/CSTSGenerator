@@ -9,12 +9,12 @@ namespace Typewriter.CodeModel
     public abstract class File : Item
     {
         /// <summary>
-        /// All public classes defined in the file.
+        /// All classes defined in the file.
         /// </summary>
         public abstract ClassCollection Classes { get; }
 
         /// <summary>
-        /// All public delegates defined in the file.
+        /// All delegates defined in the file.
         /// </summary>
         public abstract DelegateCollection Delegates { get; }
 

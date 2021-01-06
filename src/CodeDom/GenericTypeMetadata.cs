@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Typewriter.CodeModel;
 using Typewriter.Metadata.Interfaces;
 
 namespace Typewriter.Metadata.CodeDom
@@ -15,6 +16,7 @@ namespace Typewriter.Metadata.CodeDom
         public string DocComment => null;
         public string FullName => fullName;
         public bool IsAbstract => false;
+        public AccessModifier AccessModifiers => AccessModifier.NotApplicable;
         public bool IsEnum => false;
         public bool IsEnumerable => false;
         public bool IsGeneric => false;

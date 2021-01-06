@@ -62,6 +62,8 @@ namespace Typewriter.Tests.CodeModel
             var propertyInfo = classInfo.Properties.First(p => p.Name == "IntAndNamedParameter");
             var attributeInfo = propertyInfo.Attributes.First();
 
+            attributeInfo.Arguments.ShouldNotBeEmpty();
+
             var integerArgument = attributeInfo.Arguments.First();
             integerArgument.Value.ShouldEqual(2);
             integerArgument.Type.OriginalName.ShouldEqual("int");

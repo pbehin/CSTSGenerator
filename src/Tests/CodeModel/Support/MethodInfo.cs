@@ -11,7 +11,7 @@ namespace Typewriter.Tests.CodeModel.Support
         /// <returns>returns</returns>
         /// <param name="parameter">param</param>
         [AttributeInfo]
-        public void Method([AttributeInfo]string parameter)
+        public void Method([AttributeInfo] string parameter)
         {
         }
 
@@ -39,9 +39,11 @@ namespace Typewriter.Tests.CodeModel.Support
         {
         }
 
-        public void DefaultValueParameter(string nullValue = null, string stringValue = "str\\ing\"quotes\"", bool boolValue = true)
+        public void DefaultValueParameter(string nullValue = null, string stringValue = "str\\ing\"quotes\"",
+            bool boolValue = true)
         {
         }
+
     }
 
     public class GenericMethodInfo<T>

@@ -27,7 +27,7 @@ namespace Typewriter.Metadata.CodeDom
                 var stopwatch = Stopwatch.StartNew();
 
                 var undoContext = projectItem.DTE.UndoContext;
-                var undo = true;// undoContext.IsOpen == false; // && projectItem.DTE.Documents.Cast<Document>().Any(document => document.ProjectItem == projectItem);
+                var undo = undoContext.IsOpen == false; // && projectItem.DTE.Documents.Cast<Document>().Any(document => document.ProjectItem == projectItem);
 
                 CodeType typeInfo;
 
@@ -72,13 +72,7 @@ namespace Typewriter.Metadata.CodeDom
                 }
                 finally
                 {
-                    if (undo)
-                    {
-                        if (!undoContext.IsAborted)
-                            undoContext.SetAborted();
-                        if (undoContext.IsOpen)
-                            undoContext.Close();
-                    }
+                    if (undo) undoContext.SetAborted();
                 }
 
                 stopwatch.Stop();

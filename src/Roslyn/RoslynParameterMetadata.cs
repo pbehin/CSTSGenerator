@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -7,10 +8,12 @@ namespace Typewriter.Metadata.Roslyn
 {
     public class RoslynParameterMetadata : IParameterMetadata
     {
+        public Func<string, string> TypeScriptNameFunc { get; }
         private readonly IParameterSymbol symbol;
 
-        private RoslynParameterMetadata(IParameterSymbol symbol)
+        private RoslynParameterMetadata(IParameterSymbol symbol, Func<string, string> typeScriptNameFunc)
         {
+            TypeScriptNameFunc = typeScriptNameFunc;
             this.symbol = symbol;
         }
 
@@ -18,8 +21,8 @@ namespace Typewriter.Metadata.Roslyn
         public string FullName => symbol.ToDisplayString();
         public bool HasDefaultValue => symbol.HasExplicitDefaultValue;
         public string DefaultValue => GetDefaultValue();
-        public IEnumerable<IAttributeMetadata> Attributes => RoslynAttributeMetadata.FromAttributeData(symbol.GetAttributes());
-        public ITypeMetadata Type => RoslynTypeMetadata.FromTypeSymbol(symbol.Type);
+        public IEnumerable<IAttributeMetadata> Attributes => RoslynAttributeMetadata.FromAttributeData(symbol.GetAttributes(), TypeScriptNameFunc);
+        public ITypeMetadata Type => RoslynTypeMetadata.FromTypeSymbol(symbol.Type, TypeScriptNameFunc);
 
         private string GetDefaultValue()
         {
@@ -39,9 +42,9 @@ namespace Typewriter.Metadata.Roslyn
             return symbol.ExplicitDefaultValue.ToString();
         }
 
-        public static IEnumerable<IParameterMetadata> FromParameterSymbols(IEnumerable<IParameterSymbol> symbols)
+        public static IEnumerable<IParameterMetadata> FromParameterSymbols(IEnumerable<IParameterSymbol> symbols, Func<string, string> typeScriptNameFunc)
         {
-            return symbols.Select(s => new RoslynParameterMetadata(s));
+            return symbols.Select(s => new RoslynParameterMetadata(s,typeScriptNameFunc));
         }
     }
 }

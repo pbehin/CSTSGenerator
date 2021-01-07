@@ -191,7 +191,7 @@ namespace Typewriter.Tests.CodeModel
             var typeInfoProperties = typeInfo.Properties.Where(p=> !p.IsStatic && p.AccessModifiers == AccessModifier.Public).ToList();
             var propertyInfo = typeInfoProperties.First();
 
-            typeInfoProperties.Count.ShouldEqual(1);
+            typeInfoProperties.Count.ShouldEqual(3);
             propertyInfo.Name.ShouldEqual("PublicProperty");
         }
 

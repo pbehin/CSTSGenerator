@@ -97,7 +97,7 @@ namespace Typewriter.Tests.CodeModel
             var implementedInterfaceInfo = interfaceInfo.Interfaces.First();
             var propertyInfo = implementedInterfaceInfo.Properties.First();
 
-            interfaceInfo.Interfaces.Count.ShouldEqual(1);
+            interfaceInfo.Interfaces.Count.ShouldEqual(2);
             implementedInterfaceInfo.Name.ShouldEqual("IBaseInterfaceInfo");
 
             implementedInterfaceInfo.Properties.Count.ShouldEqual(1);

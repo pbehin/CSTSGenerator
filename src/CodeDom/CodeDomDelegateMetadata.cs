@@ -1,3 +1,4 @@
+using System;
 using EnvDTE;
 using EnvDTE80;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace Typewriter.Metadata.CodeDom
             this.codeDelegate = codeDelegate;
             this.file = file;
         }
-
+        
         public string DocComment => codeDelegate.DocComment;
         public string Name => codeDelegate.Name;
         public string FullName => codeDelegate.FullName;

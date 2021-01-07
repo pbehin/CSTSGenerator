@@ -57,5 +57,11 @@ namespace Typewriter.Configuration
         /// 
         /// </summary>
         public PartialRenderingMode PartialRenderingMode { get; set; } = PartialRenderingMode.Combined;
+
+        /// <summary>
+        /// function to change the script type name
+        /// </summary>
+        public Func<string, string> TypeScriptNameFunc { get; set; }
+
     }
 }

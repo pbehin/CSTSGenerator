@@ -173,7 +173,7 @@ namespace Typewriter.Tests.CodeModel
             var properties = classInfo.Properties.Where(p=> !p.IsStatic && p.AccessModifiers == AccessModifier.Public).ToList();
             var propertyInfo = properties.First(p=> !p.IsStatic);
             
-            properties.Count.ShouldEqual(1);
+            properties.Count.ShouldEqual(3);
             propertyInfo.Name.ShouldEqual("PublicProperty");
         }
 

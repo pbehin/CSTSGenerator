@@ -12,7 +12,7 @@ namespace Typewriter.Metadata.Roslyn
         private readonly string name;
         private readonly string value;
 
-        private RoslynAttributeMetadata(AttributeData a)
+        private RoslynAttributeMetadata(AttributeData a, Func<string, string> typeScriptNameFunc)
         {
             var declaration = a.ToString();
             var index = declaration.IndexOf("(", StringComparison.Ordinal);
@@ -40,7 +40,7 @@ namespace Typewriter.Metadata.Roslyn
             if (name.EndsWith("Attribute"))
                 name = name.Substring(0, name.Length - 9);
 
-            this.Arguments = a.ConstructorArguments.Concat(a.NamedArguments.Select(p=>p.Value)).Select(p => new RoslynAttrubuteArgumentMetadata(p));
+            this.Arguments = a.ConstructorArguments.Concat(a.NamedArguments.Select(p=>p.Value)).Select(p => new RoslynAttrubuteArgumentMetadata(p, typeScriptNameFunc));
         }
 
         public string DocComment => symbol.GetDocumentationCommentXml();
@@ -49,9 +49,9 @@ namespace Typewriter.Metadata.Roslyn
         public string Value => value;
         public IEnumerable<IAttributeArgumentMetadata> Arguments { get; private set; }
 
-        public static IEnumerable<IAttributeMetadata> FromAttributeData(IEnumerable<AttributeData> attributes)
+        public static IEnumerable<IAttributeMetadata> FromAttributeData(IEnumerable<AttributeData> attributes, Func<string, string> typeScriptNameFunc)
         {
-            return attributes.Select(a => new RoslynAttributeMetadata(a));
+            return attributes.Select(a => new RoslynAttributeMetadata(a, typeScriptNameFunc));
         }
     }
 }

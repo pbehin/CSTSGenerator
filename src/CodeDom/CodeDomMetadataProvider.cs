@@ -20,7 +20,7 @@ namespace Typewriter.Metadata.CodeDom
             var projectItem = dte.Solution.FindProjectItem(path);
             if (projectItem != null)
             {
-                return new CodeDomFileMetadata(projectItem);
+                return new CodeDomFileMetadata(projectItem, settings.TypeScriptNameFunc);
             }
 
             return null;

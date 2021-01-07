@@ -37,7 +37,8 @@ namespace Typewriter.CodeModel
         {
             if (metadata == null)
                 return "any";
-
+            if (metadata.TypeScriptNameFunc != null)
+                return metadata.TypeScriptNameFunc(metadata.FullName);
             if (metadata.IsEnumerable)
             {
                 var typeArguments = metadata.TypeArguments.ToList();
@@ -100,6 +101,7 @@ namespace Typewriter.CodeModel
 
         private static string ExtractTypeScriptName(ITypeMetadata metadata)
         {
+            if (metadata.TypeScriptNameFunc != null) return metadata.TypeScriptNameFunc(metadata.FullName);
             var fullName = metadata.IsNullable ? metadata.FullName.TrimEnd('?') : metadata.FullName;
 
             switch (fullName)
@@ -132,6 +134,7 @@ namespace Typewriter.CodeModel
                 case "dynamic":
                     return "any";
             }
+
 
             return metadata.IsNullable ? metadata.Name.TrimEnd('?') : metadata.Name;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
 using Typewriter.Metadata.Interfaces;
@@ -7,11 +8,13 @@ namespace Typewriter.Metadata.CodeDom
 {
     public class CodeDomFileMetadata : IFileMetadata
     {
+        public Func<string, string> TypeScriptNameFunc { get; }
         private readonly ProjectItem projectItem;
         private readonly TypeFactory typeFactory;
 
-        public CodeDomFileMetadata(ProjectItem projectItem)
+        public CodeDomFileMetadata(ProjectItem projectItem, Func<string, string> typeScriptNameFunc)
         {
+            TypeScriptNameFunc = typeScriptNameFunc;
             this.projectItem = projectItem;
             this.typeFactory = new TypeFactory(projectItem);
         }

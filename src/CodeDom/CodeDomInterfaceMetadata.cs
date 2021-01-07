@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using EnvDTE;
@@ -32,6 +33,23 @@ namespace Typewriter.Metadata.CodeDom
         public IEnumerable<ITypeParameterMetadata> TypeParameters => CodeDomTypeParameterMetadata.FromFullName(_codeInterface.FullName);
         public IEnumerable<ITypeMetadata> TypeArguments => CodeDomTypeMetadata.LoadGenericTypeArguments(IsGeneric, FullName, _file);
         public IEnumerable<IInterfaceMetadata> Interfaces => FromCodeElements(_codeInterface.Bases, _file);
+        public IEnumerable<IInterfaceMetadata> AllInterfaces => GetAllInterfaces(_codeInterface, _file);
+
+        private IEnumerable<IInterfaceMetadata> GetAllInterfaces(CodeInterface2 codeInterface, CodeDomFileMetadata file)
+        {
+            var interface2s = new ConcurrentQueue<CodeInterface2>(codeInterface.Bases.OfType<CodeInterface2>());
+            var result = new List<CodeInterface2>();
+            while (interface2s.TryDequeue(out var item))
+            {
+                result.Add(item);
+                foreach (var codeInterface2 in item.Bases.OfType<CodeInterface2>().Where(i => !interface2s.Contains(i)))
+                {
+                    interface2s.Enqueue(codeInterface2);
+                }
+            }
+            return result.Select(i => new CodeDomInterfaceMetadata(i, file));
+        }
+
         public IEnumerable<IMethodMetadata> Methods => CodeDomMethodMetadata.FromCodeElements(_codeInterface.Children, _file);
         public IEnumerable<IPropertyMetadata> Properties => CodeDomPropertyMetadata.FromCodeElements(_codeInterface.Children, _file);
         public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(_codeInterface.Parent as CodeClass2, _file);

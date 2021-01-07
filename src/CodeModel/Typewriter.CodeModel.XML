@@ -749,6 +749,11 @@
             All interfaces implemented by the interface.
             </summary>
         </member>
+        <member name="P:Typewriter.CodeModel.Interface.AllInterfaces">
+            <summary>
+            All interfaces that an interface has.
+            </summary>
+        </member>
         <member name="P:Typewriter.CodeModel.Interface.IsGeneric">
             <summary>
             Determines if the interface is generic.

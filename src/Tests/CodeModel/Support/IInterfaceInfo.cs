@@ -4,7 +4,7 @@
     /// summary
     /// </summary>
     [AttributeInfo]
-    public interface IInterfaceInfo : IBaseInterfaceInfo
+    public interface IInterfaceInfo : IBaseInterfaceInfo, ISecondLevelInterfaceInfo
     {
         event Delegate PublicEvent;
         void PublicMethod();
@@ -14,6 +14,16 @@
     public interface IBaseInterfaceInfo
     {
         string PublicBaseProperty { get; set; }
+    }
+
+    public interface ISecondLevelInterfaceInfo : IFirstLevelInterfaceInfo
+    {
+        string SecondLevelProperty { get; set; }
+    }
+
+    public interface IFirstLevelInterfaceInfo
+    {
+        string FirstLevelProperty { get; set; }
     }
 
     public interface IGenericInterface<T>

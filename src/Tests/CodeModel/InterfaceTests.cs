@@ -105,6 +105,19 @@ namespace Typewriter.Tests.CodeModel
         }
 
         [Fact]
+        public void Expect_to_find_all_interfaces_Inherited_to_an_interfaces()
+        {
+            var interfaceInfo = fileInfo.Interfaces.First();
+            var allImplementedInterfaceInfo = interfaceInfo.AllInterfaces.Select(i=> i.Name).ToList<string>();
+            
+            allImplementedInterfaceInfo.Count.ShouldEqual(3);
+            allImplementedInterfaceInfo.ShouldContain("IBaseInterfaceInfo");
+            allImplementedInterfaceInfo.ShouldContain("ISecondLevelInterfaceInfo");
+            allImplementedInterfaceInfo.ShouldContain("IFirstLevelInterfaceInfo");
+
+        }
+
+        [Fact]
         public void Expect_to_find_methods()
         {
             var interfaceInfo = fileInfo.Interfaces.First();
@@ -161,5 +174,7 @@ namespace Typewriter.Tests.CodeModel
                 genericTypeParameter.Name.ShouldEqual("T");
             }
         }
+
+        
     }
 }

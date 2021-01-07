@@ -40,6 +40,9 @@ namespace Typewriter.CodeModel.Implementation
         private InterfaceCollection _interfaces;
         public override InterfaceCollection Interfaces => _interfaces ?? (_interfaces = InterfaceImpl.FromMetadata(_metadata.Interfaces, this));
 
+        private InterfaceCollection _allInterfaces;
+        public override InterfaceCollection AllInterfaces => _allInterfaces ?? (_allInterfaces = InterfaceImpl.FromMetadata(_metadata.AllInterfaces, this));
+        
         private MethodCollection _methods;
         public override MethodCollection Methods => _methods ?? (_methods = MethodImpl.FromMetadata(_metadata.Methods, this));
 

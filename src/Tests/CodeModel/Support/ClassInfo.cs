@@ -53,6 +53,8 @@ namespace Typewriter.Tests.CodeModel.Support
             NestedValue
         }
 
+        public string FirstLevelProperty { get; set; }
+        public string SecondLevelProperty { get; set; }
     }
 
     public class BaseClassInfo

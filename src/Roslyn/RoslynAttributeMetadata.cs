@@ -12,7 +12,7 @@ namespace Typewriter.Metadata.Roslyn
         private readonly string name;
         private readonly string value;
 
-        private RoslynAttributeMetadata(AttributeData a, Func<string, string> typeScriptNameFunc)
+        private RoslynAttributeMetadata(AttributeData a, Func<string, string, string> typeScriptNameFunc)
         {
             var declaration = a.ToString();
             var index = declaration.IndexOf("(", StringComparison.Ordinal);
@@ -49,7 +49,7 @@ namespace Typewriter.Metadata.Roslyn
         public string Value => value;
         public IEnumerable<IAttributeArgumentMetadata> Arguments { get; private set; }
 
-        public static IEnumerable<IAttributeMetadata> FromAttributeData(IEnumerable<AttributeData> attributes, Func<string, string> typeScriptNameFunc)
+        public static IEnumerable<IAttributeMetadata> FromAttributeData(IEnumerable<AttributeData> attributes, Func<string, string, string> typeScriptNameFunc)
         {
             return attributes.Select(a => new RoslynAttributeMetadata(a, typeScriptNameFunc));
         }

@@ -61,7 +61,7 @@ namespace Typewriter.Configuration
         /// <summary>
         /// function to change the script type name
         /// </summary>
-        public Func<string, string> TypeScriptNameFunc { get; set; }
+        public Func<string, string, string> TypeScriptNameFunc { get; set; }
 
     }
 }

@@ -10,10 +10,10 @@ namespace Typewriter.Metadata.Roslyn
 {
     public class RoslynEventMetadata : IEventMetadata
     {
-        public Func<string, string> TypeScriptNameFunc { get; }
+        public Func<string, string, string> TypeScriptNameFunc { get; }
         private readonly IEventSymbol symbol;
 
-        public RoslynEventMetadata(IEventSymbol symbol, Func<string, string> typeScriptNameFunc)
+        public RoslynEventMetadata(IEventSymbol symbol, Func<string, string, string> typeScriptNameFunc)
         {
             TypeScriptNameFunc = typeScriptNameFunc;
             this.symbol = symbol;
@@ -25,7 +25,7 @@ namespace Typewriter.Metadata.Roslyn
         public IEnumerable<IAttributeMetadata> Attributes => RoslynAttributeMetadata.FromAttributeData(symbol.GetAttributes(), TypeScriptNameFunc);
         public ITypeMetadata Type => RoslynTypeMetadata.FromTypeSymbol(symbol.Type, TypeScriptNameFunc);
 
-        public static IEnumerable<IEventMetadata> FromEventSymbols(IEnumerable<IEventSymbol> symbols, Func<string, string> typeScriptNameFunc)
+        public static IEnumerable<IEventMetadata> FromEventSymbols(IEnumerable<IEventSymbol> symbols, Func<string, string, string> typeScriptNameFunc)
         {
             return symbols.Where(s => s.DeclaredAccessibility == Accessibility.Public && s.IsStatic == false).Select(s => new RoslynEventMetadata(s, typeScriptNameFunc));
         }

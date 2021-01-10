@@ -8,10 +8,10 @@ namespace Typewriter.Metadata.Roslyn
 {
     public class RoslynParameterMetadata : IParameterMetadata
     {
-        public Func<string, string> TypeScriptNameFunc { get; }
+        public Func<string, string, string> TypeScriptNameFunc { get; }
         private readonly IParameterSymbol symbol;
 
-        private RoslynParameterMetadata(IParameterSymbol symbol, Func<string, string> typeScriptNameFunc)
+        private RoslynParameterMetadata(IParameterSymbol symbol, Func<string, string, string> typeScriptNameFunc)
         {
             TypeScriptNameFunc = typeScriptNameFunc;
             this.symbol = symbol;
@@ -42,7 +42,7 @@ namespace Typewriter.Metadata.Roslyn
             return symbol.ExplicitDefaultValue.ToString();
         }
 
-        public static IEnumerable<IParameterMetadata> FromParameterSymbols(IEnumerable<IParameterSymbol> symbols, Func<string, string> typeScriptNameFunc)
+        public static IEnumerable<IParameterMetadata> FromParameterSymbols(IEnumerable<IParameterSymbol> symbols, Func<string, string, string> typeScriptNameFunc)
         {
             return symbols.Select(s => new RoslynParameterMetadata(s,typeScriptNameFunc));
         }

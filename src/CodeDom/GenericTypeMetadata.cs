@@ -28,7 +28,7 @@ namespace Typewriter.Metadata.CodeDom
         public string Name => fullName;
         public string Namespace => null;
         public ITypeMetadata Type => this;
-        public Func<string, string> TypeScriptNameFunc => null;
+        public Func<string, string, string> TypeScriptNameFunc => null;
 
         public IEnumerable<IAttributeMetadata> Attributes => new IAttributeMetadata[0];
         public IClassMetadata BaseClass => null;

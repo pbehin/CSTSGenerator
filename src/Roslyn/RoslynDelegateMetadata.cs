@@ -9,11 +9,11 @@ namespace Typewriter.Metadata.Roslyn
 {
     public class RoslynDelegateMetadata : IDelegateMetadata
     {
-        public Func<string, string> TypeScriptNameFunc { get; }
+        public Func<string, string, string> TypeScriptNameFunc { get; }
         private readonly INamedTypeSymbol symbol;
         private readonly IMethodSymbol methodSymbol;
 
-        public RoslynDelegateMetadata(INamedTypeSymbol symbol, Func<string, string> typeScriptNameFunc)
+        public RoslynDelegateMetadata(INamedTypeSymbol symbol, Func<string, string, string> typeScriptNameFunc)
         {
             TypeScriptNameFunc = typeScriptNameFunc;
             this.symbol = symbol;
@@ -31,7 +31,7 @@ namespace Typewriter.Metadata.Roslyn
         public IEnumerable<ITypeParameterMetadata> TypeParameters => RoslynTypeParameterMetadata.FromTypeParameterSymbols(symbol.TypeParameters);
         public IEnumerable<IParameterMetadata> Parameters => methodSymbol == null ? new IParameterMetadata[0] : RoslynParameterMetadata.FromParameterSymbols(methodSymbol.Parameters, TypeScriptNameFunc);
 
-        public static IEnumerable<IDelegateMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols, Func<string, string> typeScriptNameFunc)
+        public static IEnumerable<IDelegateMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols, Func<string, string, string> typeScriptNameFunc)
         {
             return symbols.Select(s => new RoslynDelegateMetadata(s, typeScriptNameFunc));
         }

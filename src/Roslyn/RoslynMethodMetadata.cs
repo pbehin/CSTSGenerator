@@ -9,10 +9,10 @@ namespace Typewriter.Metadata.Roslyn
 {
     public class RoslynMethodMetadata : IMethodMetadata
     {
-        public Func<string, string> TypeScriptNameFunc { get; }
+        public Func<string, string, string> TypeScriptNameFunc { get; }
         private IMethodSymbol symbol;
 
-        public RoslynMethodMetadata(IMethodSymbol symbol, Func<string, string> typeScriptNameFunc)
+        public RoslynMethodMetadata(IMethodSymbol symbol, Func<string, string, string> typeScriptNameFunc)
         {
             TypeScriptNameFunc = typeScriptNameFunc;
             this.symbol = symbol;
@@ -29,7 +29,7 @@ namespace Typewriter.Metadata.Roslyn
         public IEnumerable<ITypeParameterMetadata> TypeParameters => RoslynTypeParameterMetadata.FromTypeParameterSymbols(symbol.TypeParameters);
         public IEnumerable<IParameterMetadata> Parameters => RoslynParameterMetadata.FromParameterSymbols(symbol.Parameters, TypeScriptNameFunc);
 
-        public static IEnumerable<IMethodMetadata> FromMethodSymbols(IEnumerable<IMethodSymbol> symbols, Func<string, string> typeScriptNameFunc)
+        public static IEnumerable<IMethodMetadata> FromMethodSymbols(IEnumerable<IMethodSymbol> symbols, Func<string, string, string> typeScriptNameFunc)
         {
             return symbols.Where(s => s.DeclaredAccessibility == Accessibility.Public && s.MethodKind == MethodKind.Ordinary && s.IsStatic == false).Select(p => new RoslynMethodMetadata(p, typeScriptNameFunc));
         }

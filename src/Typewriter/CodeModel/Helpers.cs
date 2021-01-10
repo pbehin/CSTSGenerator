@@ -35,11 +35,10 @@ namespace Typewriter.CodeModel
 
         public static string GetTypeScriptName(ITypeMetadata metadata)
         {
+            var defaultName = string.Empty;
             if (metadata == null)
-                return "any";
-            if (metadata.TypeScriptNameFunc != null)
-                return metadata.TypeScriptNameFunc(metadata.FullName);
-            if (metadata.IsEnumerable)
+                defaultName = "any";
+            else if (metadata.IsEnumerable)
             {
                 var typeArguments = metadata.TypeArguments.ToList();
 
@@ -73,19 +72,21 @@ namespace Typewriter.CodeModel
                     return string.Concat("{ [key: ", key, "]: ", value, "; }");
                 }
 
-                return "any[]";
+                defaultName = "any[]";
             }
 
-            if (metadata.IsValueTuple)
+            else if (metadata.IsValueTuple)
             {
                 var types = string.Join(", ", metadata.TupleElements.Select(p => $"{p.Name}: {GetTypeScriptName(p.Type)}"));
-                return $"{{ {types} }}";
+                defaultName = $"{{ {types} }}";
             }
 
-            if (metadata.IsGeneric)
-                return metadata.Name + string.Concat("<", string.Join(", ", metadata.TypeArguments.Select(GetTypeScriptName)), ">");
+            else if (metadata.IsGeneric)
+                defaultName = metadata.Name + string.Concat("<", string.Join(", ", metadata.TypeArguments.Select(GetTypeScriptName)), ">");
+            else 
+                defaultName = ExtractTypeScriptName(metadata);
 
-            return ExtractTypeScriptName(metadata);
+            return metadata.TypeScriptNameFunc != null ? metadata.TypeScriptNameFunc(metadata.FullName, defaultName) : defaultName;
         }
 
         public static string GetOriginalName(ITypeMetadata metadata)
@@ -101,7 +102,6 @@ namespace Typewriter.CodeModel
 
         private static string ExtractTypeScriptName(ITypeMetadata metadata)
         {
-            if (metadata.TypeScriptNameFunc != null) return metadata.TypeScriptNameFunc(metadata.FullName);
             var fullName = metadata.IsNullable ? metadata.FullName.TrimEnd('?') : metadata.FullName;
 
             switch (fullName)

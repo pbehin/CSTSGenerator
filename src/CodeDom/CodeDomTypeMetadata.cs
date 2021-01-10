@@ -11,7 +11,7 @@ namespace Typewriter.Metadata.CodeDom
 {
     public class CodeDomTypeMetadata : ITypeMetadata
     {
-        public Func<string, string> TypeScriptNameFunc => file?.TypeScriptNameFunc;
+        public Func<string, string, string> TypeScriptNameFunc => file?.TypeScriptNameFunc;
         protected CodeType codeType;
         private readonly bool isNullable;
         private readonly bool isTask;

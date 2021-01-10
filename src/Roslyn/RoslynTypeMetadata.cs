@@ -13,7 +13,7 @@ namespace Typewriter.Metadata.Roslyn
         private readonly bool isNullable;
         private readonly bool isTask;
 
-        public RoslynTypeMetadata(ITypeSymbol symbol, bool isNullable, bool isTask, Func<string, string> typeScriptNameFunc)
+        public RoslynTypeMetadata(ITypeSymbol symbol, bool isNullable, bool isTask, Func<string, string, string> typeScriptNameFunc)
         {
             this.symbol = symbol;
             this.isNullable = isNullable;
@@ -32,7 +32,7 @@ namespace Typewriter.Metadata.Roslyn
 
         public string Namespace => symbol.GetNamespace();
         public ITypeMetadata Type => this;
-        public Func<string, string> TypeScriptNameFunc { get; }
+        public Func<string, string, string> TypeScriptNameFunc { get; }
 
 
         public IEnumerable<IAttributeMetadata> Attributes => RoslynAttributeMetadata.FromAttributeData(symbol.GetAttributes(), TypeScriptNameFunc);
@@ -108,7 +108,7 @@ namespace Typewriter.Metadata.Roslyn
         public bool IsNullable => isNullable;
         public bool IsTask => isTask;
 
-        public static ITypeMetadata FromTypeSymbol(ITypeSymbol symbol, Func<string, string> typeScriptNameFunc)
+        public static ITypeMetadata FromTypeSymbol(ITypeSymbol symbol, Func<string, string, string> typeScriptNameFunc)
         {
             if (symbol.Name == "Nullable" && symbol.ContainingNamespace.Name == "System")
             {
@@ -143,7 +143,7 @@ namespace Typewriter.Metadata.Roslyn
             return new RoslynTypeMetadata(symbol, false, false, typeScriptNameFunc);
         }
 
-        public static IEnumerable<ITypeMetadata> FromTypeSymbols(IEnumerable<ITypeSymbol> symbols, Func<string, string> typeScriptNameFunc)
+        public static IEnumerable<ITypeMetadata> FromTypeSymbols(IEnumerable<ITypeSymbol> symbols, Func<string, string, string> typeScriptNameFunc)
         {
             return symbols.Select(s=> FromTypeSymbol(s, typeScriptNameFunc));
         }
@@ -165,7 +165,7 @@ namespace Typewriter.Metadata.Roslyn
         public bool IsValueTuple => false;
         public string Namespace => "System";
         public ITypeMetadata Type => null;
-        public Func<string, string> TypeScriptNameFunc => null;
+        public Func<string, string, string> TypeScriptNameFunc => null;
 
         public IEnumerable<IAttributeMetadata> Attributes => new IAttributeMetadata[0];
         public IClassMetadata BaseClass => null;

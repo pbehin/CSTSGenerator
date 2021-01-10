@@ -12,7 +12,7 @@ namespace Typewriter.Metadata.Interfaces
         bool IsDefined { get; }
         bool IsValueTuple { get; }
         IEnumerable<IFieldMetadata> TupleElements { get; }
-        Func<string, string> TypeScriptNameFunc { get; }
+        Func<string, string, string> TypeScriptNameFunc { get; }
 
     }
 }

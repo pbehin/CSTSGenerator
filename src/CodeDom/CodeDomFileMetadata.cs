@@ -8,11 +8,11 @@ namespace Typewriter.Metadata.CodeDom
 {
     public class CodeDomFileMetadata : IFileMetadata
     {
-        public Func<string, string> TypeScriptNameFunc { get; }
+        public Func<string, string, string> TypeScriptNameFunc { get; }
         private readonly ProjectItem projectItem;
         private readonly TypeFactory typeFactory;
 
-        public CodeDomFileMetadata(ProjectItem projectItem, Func<string, string> typeScriptNameFunc)
+        public CodeDomFileMetadata(ProjectItem projectItem, Func<string, string, string> typeScriptNameFunc)
         {
             TypeScriptNameFunc = typeScriptNameFunc;
             this.projectItem = projectItem;

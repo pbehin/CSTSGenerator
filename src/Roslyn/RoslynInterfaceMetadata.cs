@@ -45,7 +45,7 @@ namespace Typewriter.Metadata.Roslyn
         public bool IsGeneric => _symbol.TypeParameters.Any();
         public AccessModifier AccessModifiers => _symbol.DeclaredAccessibility.ToAccessModifier();
         public string Namespace => _symbol.GetNamespace();
-        public Func<string, string> TypeScriptNameFunc => _file?.Settings.TypeScriptNameFunc;
+        public Func<string, string, string> TypeScriptNameFunc => _file?.Settings.TypeScriptNameFunc;
 
         public ITypeMetadata Type => RoslynTypeMetadata.FromTypeSymbol(_symbol, TypeScriptNameFunc);
 

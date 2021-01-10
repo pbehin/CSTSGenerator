@@ -8,10 +8,10 @@ namespace Typewriter.Metadata.Roslyn
 {
     public class RoslynEnumMetadata : IEnumMetadata
     {
-        public Func<string, string> TypeScriptNameFunc { get; }
+        public Func<string, string, string> TypeScriptNameFunc { get; }
         private readonly INamedTypeSymbol _symbol;
         
-        public RoslynEnumMetadata(INamedTypeSymbol symbol, Func<string, string> typeScriptNameFunc)
+        public RoslynEnumMetadata(INamedTypeSymbol symbol, Func<string, string, string> typeScriptNameFunc)
         {
             TypeScriptNameFunc = typeScriptNameFunc;
             _symbol = symbol;
@@ -28,7 +28,7 @@ namespace Typewriter.Metadata.Roslyn
         public IClassMetadata ContainingClass => RoslynClassMetadata.FromNamedTypeSymbol(_symbol.ContainingType);
         public IEnumerable<IEnumValueMetadata> Values => RoslynEnumValueMetadata.FromFieldSymbols(_symbol.GetMembers().OfType<IFieldSymbol>(), TypeScriptNameFunc);
         
-        internal static IEnumerable<IEnumMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols, Func<string, string> typeScriptNameFunc)
+        internal static IEnumerable<IEnumMetadata> FromNamedTypeSymbols(IEnumerable<INamedTypeSymbol> symbols, Func<string, string, string> typeScriptNameFunc)
         {
             return symbols.Where(s => s.DeclaredAccessibility == Accessibility.Public).Select(s => new RoslynEnumMetadata(s, typeScriptNameFunc));
         }

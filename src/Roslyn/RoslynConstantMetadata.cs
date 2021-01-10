@@ -10,14 +10,14 @@ namespace Typewriter.Metadata.Roslyn
     {
         private readonly IFieldSymbol symbol;
 
-        private RoslynConstantMetadata(IFieldSymbol symbol, Func<string, string> typeScriptNameFunc) : base(symbol, typeScriptNameFunc)
+        private RoslynConstantMetadata(IFieldSymbol symbol, Func<string, string, string> typeScriptNameFunc) : base(symbol, typeScriptNameFunc)
         {
             this.symbol = symbol;
         }
 
         public string Value => $"{symbol.ConstantValue}";
 
-        public new static IEnumerable<IConstantMetadata> FromFieldSymbols(IEnumerable<IFieldSymbol> symbols, Func<string, string> typeScriptNameFunc)
+        public new static IEnumerable<IConstantMetadata> FromFieldSymbols(IEnumerable<IFieldSymbol> symbols, Func<string, string, string> typeScriptNameFunc)
         {
             return symbols.Where(s =>s.IsConst).Select(s => new RoslynConstantMetadata(s, typeScriptNameFunc));
         }

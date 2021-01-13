@@ -20,6 +20,7 @@ namespace Typewriter.Generation
         private readonly string _projectPath;
         private readonly string _projectFullName;
         private readonly ProjectItem _projectItem;
+        private readonly List<string> ProcessedItems = new List<string>();
         private Lazy<string> _template;
         private Lazy<SettingsImpl> _configuration;
         private bool _templateCompileException;
@@ -132,28 +133,37 @@ namespace Typewriter.Generation
                 }
                 else
                 {
-                    SaveFile(file, output, ref success);
+                    var outputPath = SaveFile(file, output, ref success);
+                    ProcessedItems.Add(outputPath);
                 }
             }
 
             return success;
         }
 
-        protected virtual void WriteFile(string outputPath, string outputContent)
+        protected virtual void WriteFile(string outputPath, string outputContent, bool append)
         {
-            System.IO.File.WriteAllText(outputPath, outputContent, new UTF8Encoding(true));
+            if (!append)
+            {
+                System.IO.File.WriteAllText(outputPath, outputContent, new UTF8Encoding(true));
+            }
+            else
+            {
+                System.IO.File.AppendAllText(outputPath, outputContent, new UTF8Encoding(true));
+            }
         }
 
-        protected virtual void SaveFile(File file, string output, ref bool success)
+        protected virtual string SaveFile(File file, string output, ref bool success)
         {
             ProjectItem item;
             var outputPath = GetOutputPath(file);
+            var append = IsProcessedInThisRenderingSession(file, outputPath);
 
             if (string.Equals(file.FullName, outputPath, StringComparison.InvariantCultureIgnoreCase))
             {
                 Log.Error("Output filename cannot match source filename.");
                 success = false;
-                return;
+                return outputPath;
             }
 
             var hasChanged = HasChanged(outputPath, output);
@@ -162,16 +172,16 @@ namespace Typewriter.Generation
             {
                 if (hasChanged)
                 {
-                    WriteFile(outputPath, output);
+                    WriteFile(outputPath, output, append);
                     Log.Debug($"Output file '{outputPath}' saved.");
                 }
-                return;
+                return outputPath;
             }
 
             if (hasChanged)
             {
                 CheckOutFileFromSourceControl(outputPath);
-                WriteFile(outputPath, output);
+                WriteFile(outputPath, output, append);
                 item = FindProjectItem(outputPath);
 
                 if (item == null)
@@ -192,6 +202,12 @@ namespace Typewriter.Generation
             }
 
             SetMappedSourceFile(item, file.FullName);
+            return outputPath;
+        }
+
+        private bool IsProcessedInThisRenderingSession(File file, string outputPath)
+        {
+            return ProcessedItems.Contains(outputPath);
         }
 
         public void DeleteFile(string path)
@@ -314,7 +330,7 @@ namespace Typewriter.Generation
             if (_configuration.Value.OutputFolderFactory == null) return defaultPath;
 
             var directoryInfo = _configuration.Value.OutputFolderFactory(file);
-            
+
             if (!directoryInfo.Exists)
                 Directory.CreateDirectory(directoryInfo.FullName);
             return directoryInfo.FullName;

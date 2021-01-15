@@ -25,13 +25,18 @@ namespace Typewriter.Metadata.Roslyn
         public ITypeMetadata Type => RoslynTypeMetadata.FromTypeSymbol(symbol.ReturnType, TypeScriptNameFunc);
         public bool IsAbstract => symbol.IsAbstract;
         public bool IsGeneric => symbol.IsGenericMethod;
+        public bool IsStatic => symbol.IsStatic;
+        public CodeModel.MethodKind MethodKind => symbol.MethodKind.ToMethodKind();
         public AccessModifier AccessModifiers => symbol.DeclaredAccessibility.ToAccessModifier();
         public IEnumerable<ITypeParameterMetadata> TypeParameters => RoslynTypeParameterMetadata.FromTypeParameterSymbols(symbol.TypeParameters);
         public IEnumerable<IParameterMetadata> Parameters => RoslynParameterMetadata.FromParameterSymbols(symbol.Parameters, TypeScriptNameFunc);
 
         public static IEnumerable<IMethodMetadata> FromMethodSymbols(IEnumerable<IMethodSymbol> symbols, Func<string, string, string> typeScriptNameFunc)
         {
-            return symbols.Where(s => s.DeclaredAccessibility == Accessibility.Public && s.MethodKind == MethodKind.Ordinary && s.IsStatic == false).Select(p => new RoslynMethodMetadata(p, typeScriptNameFunc));
+            return symbols.Where(s=> s.MethodKind != Microsoft.CodeAnalysis.MethodKind.PropertyGet &&
+                                     s.MethodKind != Microsoft.CodeAnalysis.MethodKind.PropertySet &&
+                                     s.MethodKind != Microsoft.CodeAnalysis.MethodKind.BuiltinOperator)
+                          .Select(p => new RoslynMethodMetadata(p, typeScriptNameFunc));
         }
     }
 }

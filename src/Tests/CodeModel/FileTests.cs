@@ -43,7 +43,7 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_classes()
         {
-            var classes = fileInfo.Classes.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            var classes = fileInfo.Classes.Where(c => c.AccessModifiers == AccessModifier.@public).ToList();
             classes.Count.ShouldEqual(2);
 
             var classInfo1 = classes.First();
@@ -56,7 +56,7 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_delegates()
         {
-            var delegates = fileInfo.Delegates.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            var delegates = fileInfo.Delegates.Where(c => c.AccessModifiers == AccessModifier.@public).ToList();
             delegates.Count.ShouldEqual(2);
 
             var delegateInfo1 = delegates.First();
@@ -81,7 +81,7 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_interfaces()
         {
-            var publicInterfaces = fileInfo.Interfaces.Where(i => i.AccessModifiers == AccessModifier.Public).ToList();
+            var publicInterfaces = fileInfo.Interfaces.Where(i => i.AccessModifiers == AccessModifier.@public).ToList();
             publicInterfaces.Count.ShouldEqual(2);
 
             var interfaceInfo1 = publicInterfaces.First();

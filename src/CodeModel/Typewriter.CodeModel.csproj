@@ -71,6 +71,7 @@
     <Compile Include="Extensions\WebApi\HttpMethodExtensions.cs" />
     <Compile Include="Extensions\WebApi\RequestDataExtensions.cs" />
     <Compile Include="Extensions\WebApi\UrlExtensions.cs" />
+    <Compile Include="CodeModel\MethodKind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CodeModel\Property.cs" />
     <Compile Include="CodeModel\Type.cs" />

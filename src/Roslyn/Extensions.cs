@@ -89,34 +89,40 @@ namespace Typewriter.Metadata.Roslyn
 
         public static AccessModifier ToAccessModifier(this Accessibility accessibility)
         {
-            AccessModifier returnValue = AccessModifier.Public;
+            AccessModifier returnValue = AccessModifier.@public;
             switch (accessibility)
             {
                 case Accessibility.NotApplicable:
                     returnValue = AccessModifier.NotApplicable;
                     break;
                 case Accessibility.Private:
-                    returnValue = AccessModifier.Private;
+                    returnValue = AccessModifier.@private;
                     break;
                 case Accessibility.ProtectedAndInternal:
-                    returnValue = AccessModifier.Protected | AccessModifier.Internal;
+                    returnValue = AccessModifier.@protected | AccessModifier.@internal;
                     break;
                 case Accessibility.Protected:
-                    returnValue = AccessModifier.Protected;
+                    returnValue = AccessModifier.@protected;
                     break;
                 case Accessibility.Internal:
-                    returnValue = AccessModifier.Internal;
+                    returnValue = AccessModifier.@internal;
                     break;
                 case Accessibility.ProtectedOrInternal:
-                    returnValue = AccessModifier.Protected | AccessModifier.Internal;
+                    returnValue = AccessModifier.@protected | AccessModifier.@internal;
                     break;
                 case Accessibility.Public:
-                    returnValue = AccessModifier.Public;
+                    returnValue = AccessModifier.@public;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(accessibility), accessibility, null);
             }
 
+            return returnValue;
+        }
+
+        public static CodeModel.MethodKind ToMethodKind(this Microsoft.CodeAnalysis.MethodKind methodKind)
+        {
+            var returnValue = (CodeModel.MethodKind)(int)methodKind;
             return returnValue;
         }
 

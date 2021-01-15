@@ -25,6 +25,8 @@ namespace Typewriter.Metadata.CodeDom
         public string FullName => codeDelegate.FullName;
         public bool IsAbstract => false;
         public bool IsGeneric => codeDelegate.IsGeneric;
+        public bool IsStatic => false;
+        public CodeModel.MethodKind MethodKind => CodeModel.MethodKind.Ordinary;
         public AccessModifier AccessModifiers => codeDelegate.Access.ToAccessModifier();
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeDelegate.Attributes);
         public IClassMetadata ContainingClass => CodeDomClassMetadata.FromCodeClass(codeDelegate.Parent as CodeClass2, file);

@@ -150,10 +150,10 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_delegates()
         {
-            var classes = fileInfo.Classes.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            var classes = fileInfo.Classes.Where(c => c.AccessModifiers == AccessModifier.@public).ToList();
             var classInfo = classes.First();
             var typeInfo = classInfo.Properties.First(p => p.Name == "Class").Type;
-            var delegates = typeInfo.Delegates.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            var delegates = typeInfo.Delegates.Where(c => c.AccessModifiers == AccessModifier.@public).ToList();
             var delegateInfo = delegates.First();
 
             delegates.Count.ShouldEqual(1);
@@ -185,10 +185,10 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_properties()
         {
-            var classInfo = fileInfo.Classes.First(p=> p.AccessModifiers == AccessModifier.Public);
-            var classProperties = classInfo.Properties.Where(p => p.AccessModifiers == AccessModifier.Public).ToList();
-            var typeInfo = classProperties.First(p => !p.IsStatic && p.AccessModifiers == AccessModifier.Public && p.Name == "Class").Type;
-            var typeInfoProperties = typeInfo.Properties.Where(p=> !p.IsStatic && p.AccessModifiers == AccessModifier.Public).ToList();
+            var classInfo = fileInfo.Classes.First(p=> p.AccessModifiers == AccessModifier.@public);
+            var classProperties = classInfo.Properties.Where(p => p.AccessModifiers == AccessModifier.@public).ToList();
+            var typeInfo = classProperties.First(p => !p.IsStatic && p.AccessModifiers == AccessModifier.@public && p.Name == "Class").Type;
+            var typeInfoProperties = typeInfo.Properties.Where(p=> !p.IsStatic && p.AccessModifiers == AccessModifier.@public).ToList();
             var propertyInfo = typeInfoProperties.First();
 
             typeInfoProperties.Count.ShouldEqual(3);

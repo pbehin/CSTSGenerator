@@ -14,22 +14,22 @@
             Access Modifier is not valid !!!
             </summary>
         </member>
-        <member name="F:Typewriter.CodeModel.AccessModifier.Public">
+        <member name="F:Typewriter.CodeModel.AccessModifier.public">
             <summary>
             Public Access Modifier
             </summary>
         </member>
-        <member name="F:Typewriter.CodeModel.AccessModifier.Private">
+        <member name="F:Typewriter.CodeModel.AccessModifier.private">
             <summary>
             Private Access Modifier
             </summary>
         </member>
-        <member name="F:Typewriter.CodeModel.AccessModifier.Protected">
+        <member name="F:Typewriter.CodeModel.AccessModifier.protected">
             <summary>
             Protected Access Modifier
             </summary>
         </member>
-        <member name="F:Typewriter.CodeModel.AccessModifier.Internal">
+        <member name="F:Typewriter.CodeModel.AccessModifier.internal">
             <summary>
             Internal Access Modifier
             </summary>
@@ -881,6 +881,21 @@
         <member name="P:Typewriter.CodeModel.Method.IsGeneric">
             <summary>
             Determines if the method is generic.
+            </summary>
+        </member>
+        <member name="P:Typewriter.CodeModel.Method.IsStatic">
+            <summary>
+            Determines if the method is Static.
+            </summary>
+        </member>
+        <member name="P:Typewriter.CodeModel.Method.MethodKind">
+            <summary>
+            Determines if the method Kind.
+            </summary>
+        </member>
+        <member name="P:Typewriter.CodeModel.Method.AccessModifier">
+            <summary>
+            Determines if the method Kind.
             </summary>
         </member>
         <member name="P:Typewriter.CodeModel.Method.name">

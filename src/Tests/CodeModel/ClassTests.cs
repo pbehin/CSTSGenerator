@@ -118,7 +118,7 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_constants()
         {
-            var classes = fileInfo.Classes.Where(c => c.AccessModifiers == AccessModifier.Public).ToList();
+            var classes = fileInfo.Classes.Where(c => c.AccessModifiers == AccessModifier.@public).ToList();
             var classInfo = classes.First();
             var constantInfo = classInfo.Constants.First();
 
@@ -129,10 +129,10 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_delegates()
         {
-            var classInfo = fileInfo.Classes.First(c=>c.AccessModifiers == AccessModifier.Public);
-            var delegateInfo = classInfo.Delegates.First(d=> d.AccessModifiers == AccessModifier.Public);
+            var classInfo = fileInfo.Classes.First(c=>c.AccessModifiers == AccessModifier.@public);
+            var delegateInfo = classInfo.Delegates.First(d=> d.AccessModifiers == AccessModifier.@public);
 
-            classInfo.Delegates.Count(d => d.AccessModifiers == AccessModifier.Public).ShouldEqual(1);
+            classInfo.Delegates.Count(d => d.AccessModifiers == AccessModifier.@public).ShouldEqual(1);
             delegateInfo.Name.ShouldEqual("PublicDelegate");
         }
 
@@ -169,8 +169,8 @@ namespace Typewriter.Tests.CodeModel
         [Fact]
         public void Expect_to_find_public_properties()
         {
-            var classInfo = fileInfo.Classes.First(c=> c.AccessModifiers == AccessModifier.Public);
-            var properties = classInfo.Properties.Where(p=> !p.IsStatic && p.AccessModifiers == AccessModifier.Public).ToList();
+            var classInfo = fileInfo.Classes.First(c=> c.AccessModifiers == AccessModifier.@public);
+            var properties = classInfo.Properties.Where(p=> !p.IsStatic && p.AccessModifiers == AccessModifier.@public).ToList();
             var propertyInfo = properties.First(p=> !p.IsStatic);
             
             properties.Count.ShouldEqual(3);

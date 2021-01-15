@@ -24,6 +24,8 @@ namespace Typewriter.Metadata.CodeDom
         public string FullName => codeFunction.FullName;
         public bool IsGeneric => codeFunction.IsGeneric;
         public bool IsAbstract => codeFunction.MustImplement;
+        public bool IsStatic => codeFunction.IsShared;
+        public CodeModel.MethodKind MethodKind => codeFunction.FunctionKind.ToMethodKind();
         public AccessModifier AccessModifiers => codeFunction.Access.ToAccessModifier();
         public IEnumerable<IAttributeMetadata> Attributes => CodeDomAttributeMetadata.FromCodeElements(codeFunction.Attributes);
         public IEnumerable<ITypeParameterMetadata> TypeParameters => CodeDomTypeParameterMetadata.FromFullName(GetFullMethodName());
@@ -53,7 +55,11 @@ namespace Typewriter.Metadata.CodeDom
 
         internal static IEnumerable<IMethodMetadata> FromCodeElements(CodeElements codeElements, CodeDomFileMetadata file)
         {
-            return codeElements.OfType<CodeFunction2>().Where(f => f.Access == vsCMAccess.vsCMAccessPublic && f.FunctionKind != vsCMFunction.vsCMFunctionConstructor && f.IsShared == false).Select(f => new CodeDomMethodMetadata(f, file));
+            return codeElements.OfType<CodeFunction2>()
+                    .Where(f=> f.FunctionKind != vsCMFunction.vsCMFunctionPropertySet &&
+                               f.FunctionKind != vsCMFunction.vsCMFunctionPropertyGet &&
+                               f.FunctionKind != vsCMFunction.vsCMFunctionPropertyLet)
+                .Select(f => new CodeDomMethodMetadata(f, file));
         }
     }
 }

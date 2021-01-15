@@ -23,6 +23,9 @@ namespace Typewriter.CodeModel.Implementation
         public override string FullName => _metadata.FullName;
         public override bool IsAbstract => _metadata.IsAbstract;
         public override bool IsGeneric => _metadata.IsGeneric;
+        public override bool IsStatic => _metadata.IsStatic;
+        public override MethodKind MethodKind => _metadata.MethodKind;
+        public override AccessModifier AccessModifier => _metadata.AccessModifiers;
 
         private AttributeCollection _attributes;
         public override AttributeCollection Attributes => _attributes ?? (_attributes = AttributeImpl.FromMetadata(_metadata.Attributes, this));

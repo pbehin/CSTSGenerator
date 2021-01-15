@@ -16,22 +16,22 @@ namespace Typewriter.CodeModel
         /// <summary>
         /// Public Access Modifier
         /// </summary>
-        Public = 1,
+        @public = 1,
 
         /// <summary>
         /// Private Access Modifier
         /// </summary>
-        Private = 2,
+        @private = 2,
 
         /// <summary>
         /// Protected Access Modifier
         /// </summary>
-        Protected = 4,
+        @protected = 4,
 
         /// <summary>
         /// Internal Access Modifier
         /// </summary>
-        Internal = 8,
+        @internal = 8,
     }
 
 }

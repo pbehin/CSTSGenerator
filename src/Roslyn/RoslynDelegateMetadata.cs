@@ -27,6 +27,8 @@ namespace Typewriter.Metadata.Roslyn
         public ITypeMetadata Type => methodSymbol == null ? null : RoslynTypeMetadata.FromTypeSymbol(methodSymbol.ReturnType, TypeScriptNameFunc);
         public bool IsAbstract => false;
         public bool IsGeneric => symbol.TypeParameters.Any();
+        public bool IsStatic => symbol.IsStatic;
+        public CodeModel.MethodKind MethodKind => CodeModel.MethodKind.Ordinary;
         public AccessModifier AccessModifiers => symbol.DeclaredAccessibility.ToAccessModifier();
         public IEnumerable<ITypeParameterMetadata> TypeParameters => RoslynTypeParameterMetadata.FromTypeParameterSymbols(symbol.TypeParameters);
         public IEnumerable<IParameterMetadata> Parameters => methodSymbol == null ? new IParameterMetadata[0] : RoslynParameterMetadata.FromParameterSymbols(methodSymbol.Parameters, TypeScriptNameFunc);

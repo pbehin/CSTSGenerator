@@ -34,6 +34,22 @@ namespace Typewriter.CodeModel
         public abstract bool IsGeneric { get; }
 
         /// <summary>
+        /// Determines if the method is Static.
+        /// </summary>
+        public abstract bool IsStatic { get; }
+
+        /// <summary>
+        /// Determines if the method Kind.
+        /// </summary>
+        public abstract MethodKind MethodKind { get; }
+
+        /// <summary>
+        /// Determines if the method Kind.
+        /// </summary>
+        public abstract AccessModifier AccessModifier { get; }
+
+
+        /// <summary>
         /// The name of the method (camelCased).
         /// </summary>
         public abstract string name { get; }

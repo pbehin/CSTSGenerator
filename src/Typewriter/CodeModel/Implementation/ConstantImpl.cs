@@ -2,7 +2,7 @@
 using System.Linq;
 using Typewriter.CodeModel.Collections;
 using Typewriter.Metadata.Interfaces;
-using static Typewriter.CodeModel.Helpers;
+using static Typewriter.CodeModel.Extensions.StringHelpers;
 
 namespace Typewriter.CodeModel.Implementation
 {

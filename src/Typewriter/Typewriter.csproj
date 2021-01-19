@@ -280,6 +280,7 @@
     <Compile Include="CodeModel\Collections\TypeParameterCollectionImpl.cs" />
     <Compile Include="CodeModel\Configuration\ProjectHelpers.cs" />
     <Compile Include="CodeModel\Configuration\SettingsImpl.cs" />
+    <Compile Include="CodeModel\Helpers.cs" />
     <Compile Include="CodeModel\Implementation\AttributeArgumentImpl.cs" />
     <Compile Include="CodeModel\Implementation\DocComment.cs" />
     <Compile Include="CodeModel\Implementation\EventImpl.cs" />
@@ -300,7 +301,6 @@
     <Compile Include="CodeModel\Collections\ParameterCollectionImpl.cs" />
     <Compile Include="CodeModel\Collections\PropertyCollectionImpl.cs" />
     <Compile Include="CodeModel\Collections\TypeCollectionImpl.cs" />
-    <Compile Include="CodeModel\Helpers.cs" />
     <Compile Include="CodeModel\Implementation\AttributeImpl.cs" />
     <Compile Include="CodeModel\Implementation\ClassImpl.cs" />
     <Compile Include="CodeModel\Implementation\ConstantImpl.cs" />

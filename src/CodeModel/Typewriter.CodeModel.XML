@@ -994,6 +994,26 @@
             Represents a collection of parameters.
             </summary>
         </member>
+        <member name="T:Typewriter.CodeModel.Extensions.StringHelpers">
+            <summary>
+            Helper methods for working with strings.
+            </summary>
+        </member>
+        <member name="M:Typewriter.CodeModel.Extensions.StringHelpers.CamelCase(System.String)">
+            <summary>
+            Returns the string with CamelCase format
+            </summary>
+        </member>
+        <member name="M:Typewriter.CodeModel.Extensions.StringHelpers.KebabCase(System.String)">
+            <summary>
+            Returns the string with KebabCase format
+            </summary>
+        </member>
+        <member name="F:Typewriter.CodeModel.Extensions.StringHelpers.PrimitiveTypes">
+            <summary>
+            Primitive Types and TS conversion
+            </summary>
+        </member>
         <member name="T:Typewriter.CodeModel.Property">
             <summary>
             Represents a property.

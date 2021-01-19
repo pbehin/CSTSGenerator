@@ -2,37 +2,13 @@
 using System.Globalization;
 using System.Linq;
 using Typewriter.Metadata.Interfaces;
+using Typewriter.CodeModel.Extensions;
+using static Typewriter.CodeModel.Extensions.StringHelpers;
 
 namespace Typewriter.CodeModel
 {
     public static class Helpers
     {
-        public static string CamelCase(string s)
-        {
-            if (string.IsNullOrEmpty(s)) return s;
-            if (char.IsUpper(s[0]) == false) return s;
-
-            var chars = s.ToCharArray();
-
-            for (var i = 0; i < chars.Length; i++)
-            {
-                if (i == 1 && char.IsUpper(chars[i]) == false)
-                {
-                    break;
-                }
-
-                var hasNext = (i + 1 < chars.Length);
-                if (i > 0 && hasNext && char.IsUpper(chars[i + 1]) == false)
-                {
-                    break;
-                }
-
-                chars[i] = char.ToLowerInvariant(chars[i]);
-            }
-
-            return new string(chars);
-        }
-
         public static string GetTypeScriptName(ITypeMetadata metadata)
         {
             var defaultName = string.Empty;
@@ -94,8 +70,8 @@ namespace Typewriter.CodeModel
             var name = metadata.Name;
             var fullName = metadata.IsNullable ? metadata.FullName.TrimEnd('?') : metadata.FullName;
 
-            if (primitiveTypes.ContainsKey(fullName))
-                name = primitiveTypes[fullName] + (metadata.IsNullable ? "?" : string.Empty);
+            if (PrimitiveTypes.ContainsKey(fullName))
+                name = PrimitiveTypes[fullName] + (metadata.IsNullable ? "?" : string.Empty);
 
             return name;
         }
@@ -160,30 +136,8 @@ namespace Typewriter.CodeModel
                 }
             }
 
-            return metadata.IsEnum || primitiveTypes.ContainsKey(fullName);
+            return metadata.IsEnum || PrimitiveTypes.ContainsKey(fullName);
         }
 
-        private static readonly Dictionary<string, string> primitiveTypes = new Dictionary<string, string>
-        {
-            { "System.Boolean", "bool" },
-            { "System.Byte", "byte" },
-            { "System.Char", "char" },
-            { "System.Decimal", "decimal" },
-            { "System.Double", "double" },
-            { "System.Int16", "short" },
-            { "System.Int32", "int" },
-            { "System.Int64", "long" },
-            { "System.SByte", "sbyte" },
-            { "System.Single", "float" },
-            { "System.String", "string" },
-            { "System.UInt32", "uint" },
-            { "System.UInt16", "ushort" },
-            { "System.UInt64", "ulong" },
-
-            { "System.DateTime", "DateTime" },
-            { "System.DateTimeOffset", "DateTimeOffset" },
-            { "System.Guid", "Guid" },
-            { "System.TimeSpan", "TimeSpan" },
-        };
     }
 }

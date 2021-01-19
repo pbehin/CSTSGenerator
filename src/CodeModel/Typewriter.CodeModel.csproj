@@ -67,6 +67,7 @@
     <Compile Include="CodeModel\Parameter.cs" />
     <Compile Include="Configuration\PartialRenderingMode.cs" />
     <Compile Include="Configuration\Settings.cs" />
+    <Compile Include="Extensions\Helpers.cs" />
     <Compile Include="Extensions\Types\TypeExtensions.cs" />
     <Compile Include="Extensions\WebApi\HttpMethodExtensions.cs" />
     <Compile Include="Extensions\WebApi\RequestDataExtensions.cs" />
